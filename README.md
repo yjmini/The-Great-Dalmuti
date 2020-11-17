@@ -6,26 +6,67 @@
 #define player 4
 
 void manual(void);//게임방법
-void play(void);//게임시작
-//게임 시작의 부속함수
-void rank(char _name[]);//계급
+void name(void);//닉네임
+void rank(struct card* _nick_name);//계급(왕, 상인, 소작농, 농노) 편성
+void allot(struct card* _nick_name);//카드 배분
 
-int main() {//메인 화면, 게임 첫 창
-	int n=0;
+char class[13][10] = { "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노","조커" };//카드 계급
+typedef enum number_cards { Dal, Arch, Si, Mis, Sister, Knight, Seam, Gong, Cook, Shep, Miner, Nong, Joker };
+int total_cards = Dal + Arch + Si + Mis + Sister + Knight + Seam + Gong + Cook + Shep + Miner + Nong + Joker;
+
+struct  card
+{
+	char Names[10]; //이름 , nick_name[4]
+	int Cards;  //계급(카드 숫자),  rack_m[4]
+};
+
+int main(struct card* _nick_name) {//메인 화면, 게임 첫 창
+	int n = 0;
 
 	printf("                위대한 달무티\n\n");
 	printf("             인생은 불공평 합니다.\n\n");
 	printf("1.게임 시작\t2.게임 방법\t3.게임 종료\n\n");
 	printf("              숫자를 입력하시오: \n\n\n");
 	printf("                               전체 화면으로 진행해주세요.\n");
-	scanf("%d", &n);
+	scanf("%d", &n); n = 0;
 	
-	if (n == 1)
-		play();
 	if (n == 2)
 		manual();
 	if (n == 3)
 		exit(1);
+	if (n == 1)
+		name();
+
+	printf("계급을 나누기 위해 카드를 뽑으시겠습니까?(1. 예, 2. 아니요): \n");
+	scanf("%d\n", &n);  n = 0;
+
+	if (n == 2)
+		exit(1);
+	else
+		rank(_nick_name);
+
+	char str[255] = { 0 };
+
+	printf("왕이 노예에게 시키고 싶은 일을 입력하시오(예, 물 좀 가져와): ");
+	if (gets(str) == NULL) {
+		printf("입력 실패\n");
+		return -1;
+	}
+	
+	if (put(str) == EOF) {
+		printf("출력 실패\n");
+		return -1;
+	}
+	else
+		printf("왕께서 %s라고 하셨습니다.\n", str);
+	printf("왕께서 시킨 일을 다 행하였습니까?(1. 예, 2. 아니요) ");
+	scanf("%d\n\n", &n); n = 0;
+
+	printf("카드를 배분하시겠습니까?(1. 예, 2. 아니요) ");
+	scanf("%d\n\n", &n); n = 0;
+
+	void allot(_nick_name);
+
 	return 0;
 }
 
@@ -55,54 +96,62 @@ void manual() {//2.게임 방법
 	scanf("%d", &n);
 }
 
-void play() {//1.게임 시작
-	char name[4][10] = { 0 };
-	printf("플레이어의 닉네임을 차례대로 입력해주세요: ");  //닉네임 생성
+void name() {//닉네임 
+	struct card nick_name[player] = { 0 };
 
+	printf("플레이어의 닉네임을 차례대로 입력하시오(9자 이내): ");
+	for (int i = 0; i < player; i++) 
+		scanf("%s ", nick_name[i].Names);
+	printf("지정된 플레이어의 닉네임은\n");
 	for (int i = 0; i < player; i++)
-		scanf("%s", name[i]);
-	for (int i = 0; i < player; i++)
-		printf("%s ", name[i]);   
-
-	int n = 0;
-
-	printf("계급을 나누기 위해 카드를 뽑으시겠습니까?(1. 예, 2. 아니요): \n");
-	scanf("%d", &n);
-
-	if (n == 2)
-		exit(1);
-	else
-		rank(name);
+		printf("%s\n ", nick_name[i].Names);
 }
 
-void rank(char _name[]) {//계급 편성
-	int card[player] = { 0 };
-	
-	for (int i = 0; i < player; i++)
-		card[i] = rand() % 13 + 1;
-	for (int i = 0; i < player; i++)
-		printf("%s: %d\n", _name[i], card[i]);
-	printf("\n");
+void rank(struct card* _nick_name) {//계급 분배(랜덤)
 
-	int tmp = 0;
-	int n = 0, m = 0, i=0;
+	struct card rank_m[player] = { 0 };
 
-	for (n = 0, i=0; n < player; ++n, i++) // n을 4가 될때까지 반복 
+	for (int i = 0; i < player; i++)
+		rank_m[i].Cards = rand() % 12 + 1;
+	for (int i = 0; i < player; i++) {
+		printf("%s: %d\n", _nick_name->Names, rank_m[i].Cards);
+		(_nick_name++);
+	}
+	printf("\n계급\n\n");
+
+	char ranking[player][10] = { "왕", "상인", "소작농", "농노" };
+	int best = 0, n = 1;
+	struct card temp, ch;
+
+	for (int i = player - 1; i > 0; i--) //계급 편성(왕, 상인, 소작농, 농노)
 	{
-		for (m = n + 1; m < player; ++m) // n번째 다음자리수 m을 4이 될때까지 반복
+		for (int j = 0; j < i; j++)
 		{
-			if (card[m] < card[n]) // n번째수 > m번째수 이라면
+			if (rank_m[j].Cards > rank_m[j + 1].Cards)
 			{
-				tmp = card[m];
-				card[m] = card[n];
-				card[n] = tmp;  // m번째수랑 n번째수 자리바꾸기
+				temp = rank_m[j];
+				rank_m[j] = rank_m[j + 1];
+				rank_m[j + 1] = temp;
+				ch = _nick_name[j];
+				_nick_name[j] = _nick_name[j + 1];
+				_nick_name[j + 1] = ch;
 			}
 		}
 	}
-	card[0] = "노예";
-	card[1] = "평민";
-	card[2] = "귀족";
-	card[3] = "왕";
+	for (int i = 0; i < player; i++) {
+		printf("%s: %s\n", _nick_name->Names, ranking[i]);
+		(_nick_name++);
+	}
+}
 
-	printf("%s: %s", )
+void allot(struct card* _nick_name) {
+
+
+	while ()
+	{
+		printf("%s의 카드\n\n", _nick_name->Names);
+		for(int i=0; i<13; i++)
+			printf("%d. %s : %d장\n", i+1, class[i], )
+
+	}
 }
