@@ -1,0 +1,55 @@
+int main(struct card* _nick_name) {//메인 화면, 게임 첫 창
+	int n = 0;
+
+	printf("                위대한 달무티\n\n");
+	printf("             인생은 불공평 합니다.\n\n");
+	printf("1.게임 시작\t2.게임 방법\t3.게임 종료\n\n");
+	printf("              숫자를 입력하시오: \n\n\n");
+	printf("                               전체 화면으로 진행해주세요.\n");
+	scanf("%d", &n); n = 0;
+	
+	if (n == 2)
+		manual();
+	if (n == 3)
+		exit(1);
+	if (n == 1)
+		name();
+
+	printf("계급을 나누기 위해 카드를 뽑으시겠습니까?(1. 예, 2. 아니요): \n");
+	scanf("%d\n", &n);  n = 0;
+
+	if (n == 2)
+		exit(1);
+
+	struct card rank_m[player] = { 0 };  //계급 분배(랜덤, 동일한 숫자가 나오지 않게 분배)  
+
+
+		for (int i = 0; i < player; i++) {
+			rank_m[i].Cards = rand() % 12 + 1;
+			for (int j = 0; j < i; j++) {
+				if (rank_m[i].Cards == rank_m[j].Cards)
+					break;
+				if (i > j) i--;
+			}
+		}
+	
+	for (int i = 0; i < player; i++) {
+		printf("%s: %d\n", _nick_name->Names, rank_m[i].Cards);
+		(_nick_name++);
+	}
+	printf("\n계급\n\n");
+
+	rank(_nick_name, rank_m); //계급 편성 함수 호출
+
+	work(); //왕이 시킬 일 함수 호출
+
+	printf("카드를 배분하시겠습니까?(1. 예, 2. 아니요) ");
+	scanf("%d\n\n", &n); n = 0;
+
+	if (n == 2)
+		exit(1);
+
+	void allot(_nick_name); //카드 배분 함수 호출
+
+	return 0;
+}
