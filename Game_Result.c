@@ -3,7 +3,9 @@
 #include <string.h>
 #include <time.h>
 
-// À¯Àú ±¸Á¶Ã¼
+// 11.22
+
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -12,11 +14,11 @@ struct User {
 
 void Game_Result(struct User* User);
 
-int Rank = 0; // µî¼ö¸¦ ÀúÀåÇÒ º¯¼ö
+int Rank = 0; // ë“±ìˆ˜ë¥¼ ì €ìž¥í•  ë³€ìˆ˜
 
 void Game_Result(struct User* User) {
 
-	// °¡Áö°í ÀÖ´Â ÆÐ Áß¿¡¼­ 0°³ÀÎ Ä«µåÀÇ Á¾·ù¸¦ Ä«¿îÆ®ÇÏ¿© ÀúÀåÇÒ º¯¼ö
+	// ê°€ì§€ê³  ìžˆëŠ” íŒ¨ ì¤‘ì—ì„œ 0ê°œì¸ ì¹´ë“œì˜ ì¢…ë¥˜ë¥¼ ì¹´ìš´íŠ¸í•˜ì—¬ ì €ìž¥í•  ë³€ìˆ˜
 	int _Count = 0;
 	char buf[255] = { 0 };
 
@@ -27,29 +29,29 @@ void Game_Result(struct User* User) {
 	}
 
 	if (_Count == 13) {
-		printf("´ç½ÅÀº %dµî ÀÔ´Ï´Ù.\n", Rank + 1);
+		printf("ë‹¹ì‹ ì€ %dë“± ìž…ë‹ˆë‹¤.\n", Rank + 1);
 	}
 
-	// µî¼ö¿¡ µû¶ó °è±Þ ºÎ¿©
+	// ë“±ìˆ˜ì— ë”°ë¼ ê³„ê¸‰ ë¶€ì—¬
 	switch (Rank) {
 	case 0:
-		strcpy_s(User->Class, 5, "¿Õ");
-		printf("´ç½ÅÀÇ »õ·Î¿î °è±Þ : ");
+		strcpy_s(User->Class, 5, "ì™•");
+		printf("ë‹¹ì‹ ì˜ ìƒˆë¡œìš´ ê³„ê¸‰ : ");
 		puts(User->Class);
 		break;
 	case 1:
-		strcpy_s(User->Class, 5, "±ÍÁ·");
-		printf("´ç½ÅÀÇ »õ·Î¿î °è±Þ : ");
+		strcpy_s(User->Class, 5, "ê·€ì¡±");
+		printf("ë‹¹ì‹ ì˜ ìƒˆë¡œìš´ ê³„ê¸‰ : ");
 		puts(User->Class);
 		break;
 	case 2:
-		strcpy_s(User->Class, 5, "³ó¹Î");
-		printf("´ç½ÅÀÇ »õ·Î¿î °è±Þ : ");
+		strcpy_s(User->Class, 5, "ë†ë¯¼");
+		printf("ë‹¹ì‹ ì˜ ìƒˆë¡œìš´ ê³„ê¸‰ : ");
 		puts(User->Class);
 		break;
 	case 3:
-		strcpy_s(User->Class, 5, "³ë¿¹");
-		printf("´ç½ÅÀÇ »õ·Î¿î °è±Þ : ");
+		strcpy_s(User->Class, 5, "ë…¸ì˜ˆ");
+		printf("ë‹¹ì‹ ì˜ ìƒˆë¡œìš´ ê³„ê¸‰ : ");
 		puts(User->Class);
 		break;
 	}
@@ -57,19 +59,19 @@ void Game_Result(struct User* User) {
 	Rank++;
 	if (Rank + 1 == 4) Rank = 0;
 
-	if (strcmp(User->Class, "¿Õ") == 0) {
+	if (strcmp(User->Class, "ì™•") == 0) {
 	PROCEED:
-		printf("°ÔÀÓÀ» °è¼Ó ÁøÇàÇÏ½Ã°Ú½À´Ï±î? (\"¿¹\" È¤Àº \"¾Æ´Ï¿ä\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À): ");
+		printf("ê²Œìž„ì„ ê³„ì† ì§„í–‰í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€ \"ì•„ë‹ˆìš”\"ë¼ê³  ìž…ë ¥í•˜ì‹œì˜¤): ");
 		gets_s(buf, 255);
 
-		if (strcmp(buf, "¿¹") == 0) {
-			// Ä«µå ºÐ¹èºÎÅÍ ´Ù½Ã ½ÃÀÛ
+		if (strcmp(buf, "ì˜ˆ") == 0) {
+			// ì¹´ë“œ ë¶„ë°°ë¶€í„° ë‹¤ì‹œ ì‹œìž‘
 		}
-		else if (strcmp(buf, "¾Æ´Ï¿ä") == 0) {
+		else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) {
 			return 0;
 		}
 		else {
-			printf("Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
+			printf("ìž˜ëª» ìž…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
 			goto PROCEED;
 		}
 	}
