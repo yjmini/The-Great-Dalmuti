@@ -5,8 +5,7 @@
 
 // 11.21 
 
-
-// À¯Àú ±¸Á¶Ã¼
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -15,42 +14,42 @@ struct User {
 
 void Play_A_Card(struct User* User);
 
-int preCard_Class = 13; // ÀÌÀü¿¡ ³ª¿Â Ä«µåÀÇ °è±Ş°ú ºñ±³ÇÏ±â À§ÇÑ º¯¼ö
-int Pay_Card_Num = 0; // ¼±¾ğÇÑ Ä«µåÀÇ °³¼ö¸¦ ÀúÀåÇÒ º¯¼ö
-int count = 0; // ÅÏÀ» Ä«¿îÆ®ÇÏ±â À§ÇÑ º¯¼ö
+int preCard_Class = 13; // ì´ì „ì— ë‚˜ì˜¨ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ë¹„êµí•˜ê¸° ìœ„í•œ ë³€ìˆ˜
+int Pay_Card_Num = 0; // ì„ ì–¸í•œ ì¹´ë“œì˜ ê°œìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
+int count = 0; // í„´ì„ ì¹´ìš´íŠ¸í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
 
 void Play_A_Card(struct User* User) {
 
-	// ÇÃ·¹ÀÌ¾î°¡ ³¾ Ä«µåÀÇ °è±Ş°ú °³¼ö, ±×¸®°í Á¶Ä¿ÀÇ °³¼ö¸¦ ÀúÀåÇÒ º¯¼ö
+	// í”Œë ˆì´ì–´ê°€ ë‚¼ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ê°œìˆ˜, ê·¸ë¦¬ê³  ì¡°ì»¤ì˜ ê°œìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
 	int Card_Kind = 0, Card_How = 0, Joker = 0;
 	char buf[255] = { 0 };
 
 DECIDE:
-	printf("Ä«µå¸¦ ³»½Ã°Ú½À´Ï±î? (\"³½´Ù\" È¤Àº \"ÆĞ½º\" ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
+	printf("ì¹´ë“œë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? (\"ë‚¸ë‹¤\" í˜¹ì€ \"íŒ¨ìŠ¤\" ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
 	gets_s(buf, 255);
 
-	// ÀÔ·Â¹ŞÀº ¹®ÀÚ¿­¿¡ µû¶ó ÁøÇà
-	if (strcmp(buf, "ÆĞ½º") == 0) {
+	// ì…ë ¥ë°›ì€ ë¬¸ìì—´ì— ë”°ë¼ ì§„í–‰
+	if (strcmp(buf, "íŒ¨ìŠ¤") == 0) {
 		count++;
 		return 0;
 	}
-	else if (strcmp(buf, "³½´Ù") == 0) {
+	else if (strcmp(buf, "ë‚¸ë‹¤") == 0) {
 	PAY:
-		printf("¾î¶² Ä«µå¸¦ ³»½Ã°Ú½À´Ï±î? : ");
+		printf("ì–´ë–¤ ì¹´ë“œë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
 		scanf_s("%d", &Card_Kind);
 
 		if (Card_Kind >= 13) {
-			printf("Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n");
+			printf("ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n");
 			goto PAY;
 		}
 
 		else if (User->Card[Card_Kind] == 0) {
-			printf("ÀÔ·ÂÇÏ½Å Ä«µå´Â °¡Áö°í ÀÖÁö ¾Ê½À´Ï´Ù.\n");
+			printf("ì…ë ¥í•˜ì‹  ì¹´ë“œëŠ” ê°€ì§€ê³  ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
 			goto PAY;
 		}
 
 		else if (preCard_Class <= Card_Kind) {
-			printf("ÀÔ·ÂÇÏ½Å Ä«µå´Â ³¾ ¼ö ¾ø½À´Ï´Ù.\n");
+			printf("ì…ë ¥í•˜ì‹  ì¹´ë“œëŠ” ë‚¼ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n");
 			goto PAY;
 		}
 
@@ -58,31 +57,31 @@ DECIDE:
 
 		if (User->Card[0] > 0) {
 		JOKER:
-			printf("¾î¸´ ±¤´ë¸¦ ³»½Ã°Ú½À´Ï±î? (\"¿¹\" È¤Àº \"¾Æ´Ï¿ä\" ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) ");
+			printf("ì–´ë¦¿ ê´‘ëŒ€ë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€ \"ì•„ë‹ˆìš”\" ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) ");
 			gets_s(buf, 255);
 
-			if (strcmp(buf, "¿¹") == 0) {
+			if (strcmp(buf, "ì˜ˆ") == 0) {
 			HOW_:
-				printf("¸î ÀåÀ» ³»½Ã°Ú½À´Ï±î? : ");
+				printf("ëª‡ ì¥ì„ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
 				scanf_s("%d", &Joker);
 
 				if (Joker < User->Card[0]) {
-					printf("¼ÒÀ¯ÇÏ½Å Ä«µå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n");
+					printf("ì†Œìœ í•˜ì‹  ì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
 					goto HOW_;
 				}
 			}
-			else if (strcmp(buf, "¾Æ´Ï¿ä") == 0) goto HOW;
+			else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) goto HOW;
 			else {
-				printf("Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
+				printf("ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
 				goto JOKER;
 			}
 			User->Card[0] -= Joker;
 		}
 
 	HOW:
-		printf("%dÀåÀ» ³»¼Å¾ßÇÕ´Ï´Ù.\n", Pay_Card_Num);
-		printf("(0ÀåÀÏ °æ¿ì ÀÚ½ÅÀÌ ³»´Â Ä«µåÀÇ °³¼ö°¡ ±âÁØÀÌ µË´Ï´Ù.)\n");
-		printf("¸î ÀåÀ» ³»½Ã°Ú½À´Ï±î? : ");
+		printf("%dì¥ì„ ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n", Pay_Card_Num);
+		printf("(0ì¥ì¼ ê²½ìš° ìì‹ ì´ ë‚´ëŠ” ì¹´ë“œì˜ ê°œìˆ˜ê°€ ê¸°ì¤€ì´ ë©ë‹ˆë‹¤.)\n");
+		printf("ëª‡ ì¥ì„ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
 		scanf_s("%d", &Card_How);
 
 		if (count % 3 == 0) {
@@ -91,24 +90,24 @@ DECIDE:
 		}
 
 		if (User->Card[Card_Kind] < Card_How) {
-			printf("¼ÒÀ¯ÇÏ½Å Ä«µå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n");
+			printf("ì†Œìœ í•˜ì‹  ì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
 			goto HOW;
 		}
 
 		if (Joker > 0) {
 			if (Pay_Card_Num > User->Card[Card_Kind] + Joker) {
-				printf("Ä«µå¸¦ ´õ ³»¼Å¾ßÇÕ´Ï´Ù.\n");
+				printf("ì¹´ë“œë¥¼ ë” ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n");
 				goto HOW;
 			}
 			else if (Pay_Card_Num < User->Card[Card_Kind] + Joker) {
-				printf("Ä«µå¸¦ ³Ê¹« ¸¹ÀÌ ³»¼Ì½À´Ï´Ù.\n");
+				printf("ì¹´ë“œë¥¼ ë„ˆë¬´ ë§ì´ ë‚´ì…¨ìŠµë‹ˆë‹¤.\n");
 				goto HOW;
 			}
 			else User->Card[Card_Kind] -= Card_How;
 		}
 
 		else if (Pay_Card_Num > User->Card[Card_Kind]) {
-			printf("Ä«µå¸¦ ´õ ³»¼Å¾ßÇÕ´Ï´Ù.\n");
+			printf("ì¹´ë“œë¥¼ ë” ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n");
 			goto HOW;
 		}
 
@@ -116,7 +115,7 @@ DECIDE:
 		count++;
 	}
 	else {
-		printf("Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
+		printf("ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
 		goto DECIDE;
 	}
 
