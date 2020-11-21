@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-// 11.21 
+// 11.22
 
 // 유저 구조체
 struct User {
@@ -16,7 +16,7 @@ void Play_A_Card(struct User* User);
 
 int preCard_Class = 13; // 이전에 나온 카드의 계급과 비교하기 위한 변수
 int Pay_Card_Num = 0; // 선언한 카드의 개수를 저장할 변수
-int count = 0; // 턴을 카운트하기 위한 변수
+int count = 0, count_ = 0; // 턴을 카운트하기 위한 변수
 
 void Play_A_Card(struct User* User) {
 
@@ -53,7 +53,10 @@ DECIDE:
 			goto PAY;
 		}
 
-		preCard_Class = Card_Kind;
+		if (count_ % 3 == 0) {
+			preCard_Class = Card_Kind;
+			count_ = 0;
+		}
 
 		if (User->Card[0] > 0) {
 		JOKER:
@@ -113,6 +116,7 @@ DECIDE:
 
 		User->Card[Card_Kind] -= Card_How;
 		count++;
+		count_++;
 	}
 	else {
 		printf("잘못 입력하셨습니다.\n");
