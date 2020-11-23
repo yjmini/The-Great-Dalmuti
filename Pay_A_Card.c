@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-// 11.22
+// 11.23
 
 // 유저 구조체
 struct User {
@@ -30,7 +30,7 @@ DECIDE:
 
 	// 입력받은 문자열에 따라 진행
 	if (strcmp(buf, "패스") == 0) {
-		count++;
+		count++, count_++;
 		return 0;
 	}
 	else if (strcmp(buf, "낸다") == 0) {
@@ -38,29 +38,16 @@ DECIDE:
 		printf("어떤 카드를 내시겠습니까? : ");
 		scanf_s("%d", &Card_Kind);
 
-		if (Card_Kind >= 13) {
-			printf("잘못 입력하셨습니다\n");
-			goto PAY;
-		}
-
-		else if (User->Card[Card_Kind] == 0) {
-			printf("입력하신 카드는 가지고 있지 않습니다.\n");
-			goto PAY;
-		}
-
-		else if (preCard_Class <= Card_Kind) {
-			printf("입력하신 카드는 낼 수 없습니다.\n");
-			goto PAY;
-		}
+		if (Error_(&User, Card_Kind, -1) == -1) goto PAY;
 
 		if (count_ % 3 == 0) {
 			preCard_Class = Card_Kind;
 			count_ = 0;
 		}
 
-		if (User->Card[0] > 0) {
+		if (User->Card[0] == 0) {
 		JOKER:
-			printf("어릿 광대를 내시겠습니까? (\"예\" 혹은 \"아니요\" 라고 입력하시오) ");
+			printf("어릿 광대를 내시겠습니까? (\"예\" 혹은 \"아니요\" 라고 입력하시오) : ");
 			gets_s(buf, 255);
 
 			if (strcmp(buf, "예") == 0) {
@@ -68,12 +55,9 @@ DECIDE:
 				printf("몇 장을 내시겠습니까? : ");
 				scanf_s("%d", &Joker);
 
-				if (Joker < User->Card[0]) {
-					printf("소유하신 카드가 부족합니다.\n");
-					goto HOW_;
-				}
+				if (Error_(&User, 0, Joker) == -1) goto HOW_; // 조커 0장 입력했을 때 조건 설정하기
 			}
-			else if (strcmp(buf, "아니요") == 0) goto HOW;
+			else if (strcmp(buf, "아니요") == 0) goto PRINT;
 			else {
 				printf("잘못 입력하셨습니다.\n");
 				goto JOKER;
@@ -81,9 +65,12 @@ DECIDE:
 			User->Card[0] -= Joker;
 		}
 
-	HOW:
-		printf("%d장을 내셔야합니다.\n", Pay_Card_Num);
+	PRINT:
+		if (Joker > 0) printf("입력하신 카드를 %d장을 내셔야합니다\n", Pay_Card_Num - Joker);
+		else printf("입력하신 카드를 %d장을 내셔야합니다.\n", Pay_Card_Num);
 		printf("(0장일 경우 자신이 내는 카드의 개수가 기준이 됩니다.)\n");
+
+	HOW:
 		printf("몇 장을 내시겠습니까? : ");
 		scanf_s("%d", &Card_How);
 
@@ -92,31 +79,16 @@ DECIDE:
 			count = 0;
 		}
 
-		if (User->Card[Card_Kind] < Card_How) {
-			printf("소유하신 카드가 부족합니다.\n");
-			goto HOW;
-		}
-
 		if (Joker > 0) {
-			if (Pay_Card_Num > User->Card[Card_Kind] + Joker) {
-				printf("카드를 더 내셔야합니다.\n");
-				goto HOW;
-			}
-			else if (Pay_Card_Num < User->Card[Card_Kind] + Joker) {
-				printf("카드를 너무 많이 내셨습니다.\n");
-				goto HOW;
-			}
-			else User->Card[Card_Kind] -= Card_How;
+			if (Error_(&User, Card_Kind, Card_How + Joker) == -1) goto HOW;
 		}
 
-		else if (Pay_Card_Num > User->Card[Card_Kind]) {
-			printf("카드를 더 내셔야합니다.\n");
-			goto HOW;
+		else {
+			if (Error_(&User, Card_Kind, Card_How) == -1) goto HOW;
 		}
 
 		User->Card[Card_Kind] -= Card_How;
-		count++;
-		count_++;
+		count++, count_++;
 	}
 	else {
 		printf("잘못 입력하셨습니다.\n");
