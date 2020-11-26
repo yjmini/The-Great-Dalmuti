@@ -3,7 +3,9 @@
 #include <string.h>
 #include <time.h>
 
-// ю╞юЗ ╠╦а╤ц╪
+// 11.26
+
+// Л°═Л═─ Й╣╛Л║╟Л╡╢
 struct User {
 	char name[255];
 	char Class[5];
@@ -15,19 +17,19 @@ int Decide_Re_Game(struct User* User);
 int Decide_Re_Game(struct User* User) {
 	char buf[255] = { 0 };
 
-	if (strcmp(User->Class, "©у") == 0) {
+	if (strcmp(User->Class, "Л≥∙") == 0) {
 	PROCEED:
-		printf("╟тюсю╩ ╟Х╪с аЬгЮго╫ц╟з╫ю╢о╠Н? (\"©╧\" х╓ю╨ \"╬ф╢о©Д\"╤С╟М ют╥бго╫ц©ю): ");
+		printf("Й╡▄Л·└Л²└ ЙЁ└Л├█ Л╖└М√┴М∙≤Л▀°Й╡═Л┼╣К▀┬Й╧▄? (\"Л≤┬\" М≤╧Л²─ \"Л∙└К▀┬Л ■\"К²╪ЙЁ═ Л·┘К═╔М∙≤Л▀°Л≤╓): ");
 		gets_s(buf, 255);
 
-		if (strcmp(buf, "©╧") == 0) {
-			// д╚╣Е ╨п╧Х╨нем ╢ы╫ц ╫цюш
+		if (strcmp(buf, "Л≤┬") == 0) {
+			// Л╧╢К⌠° К╤└К╟╟К╤─М└╟ К▀╓Л▀° Л▀°Л·▒
 		}
-		else if (strcmp(buf, "╬ф╢о©Д") == 0) {
+		else if (strcmp(buf, "Л∙└К▀┬Л ■") == 0) {
 			return 0;
 		}
 		else {
-			printf("юъ╦Ь ют╥бго╪л╫ю╢о╢ы.\n");
+			printf("Л·≤К╙╩ Л·┘К═╔М∙≤Л┘╗Л┼╣К▀┬К▀╓.\n");
 			goto PROCEED;
 		}
 	}
