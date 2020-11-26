@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-// 11.26
+//11.26
 
 // 유저 구조체
 struct User {
