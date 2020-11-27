@@ -1,0 +1,26 @@
+int King_Order_To_Slave(); {//시킬 일
+	char str[255] = { 0 };
+	int n = 0;
+
+	printf("왕이 노예에게 시키고 싶은 일을 입력하시오(예, 물 좀 가져와): ");
+	if (gets(str) == NULL) {
+		printf("입력 실패\n");
+		return -1;
+	}
+
+	while (1) {
+		if (put(str) == EOF) {
+			printf("출력 실패\n");
+			return -1;
+		}
+		else {
+			printf("왕께서 %s라고 하셨습니다.\n", str);
+			printf("왕께서 시킨 일을 다 행하였습니까?(1. 예, 2. 아니요) ");
+			scanf("%d\n\n", &n); n = 0;
+
+			if (n == 1)
+				break;
+		}
+	}
+	return 0;
+}
