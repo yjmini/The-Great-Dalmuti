@@ -1,0 +1,27 @@
+void Decide_Divide_Class(struct card* _nick_name, struct card* _rank_m) {
+
+
+	char ranking[player][10] = { "왕", "상인", "소작농", "농노" };
+	int best = 0, n = 1;
+	struct card temp, ch;
+
+	for (int i = player - 1; i > 0; i--) //계급 편성(왕, 상인, 소작농, 농노), 출력
+	{
+		for (int j = 0; j < i; j++)
+		{
+			if (_rank_m[j].Cards > _rank_m[j + 1].Cards)
+			{
+				temp = _rank_m[j];
+				_rank_m[j] = _rank_m[j + 1];
+				_rank_m[j + 1] = temp;
+				ch = _nick_name[j];
+				_nick_name[j] = _nick_name[j + 1];
+				_nick_name[j + 1] = ch;
+			}
+		}
+	}
+	for (int i = 0; i < player; i++) {
+		printf("%s: %s\n", _nick_name->Names, ranking[i]);
+		(_nick_name++);
+	}
+}
