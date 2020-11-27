@@ -6,17 +6,15 @@
 #include <time.h>
 #define player 4
 
-
 int Print_Game_Rule(); //게임 방법 함수
 void Write_User_Nickname(); //닉네임 입력받는 함수
 void Divide_Class(struct card* _nick_name, struct card* _rank_m); //계급 나누는 함수
-void Card_Deal(struct card* _nick_name); //카드 패 나누고 보여주는 함수
+void Card_Deal(struct card* _nick_name); //카드 분배
 void Revolution(); //혁명 함수
-void Card_Submit(); //카드 제출 함수
-int King_Order_To_Slave(); //일 시키는 함수
 void Pay_A_Tribute(); //조공(세금) 함수
+int King_Order_To_Slave(); //일 시키는 함수
+void Card_Submit(); //카드 제출 함수
 void Reorganize_Class(); //계급 재편성 함수
-void Regame(char regame); //게임 계속 진행할 것인지 입력받는 함수
 
 char class[13][10] = { "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노","조커" };//카드 계급
 char Class[4][4] = { "왕", "귀족", "평민", "노예" };
