@@ -1,24 +1,72 @@
-int main(struct card* _nick_name) {//메인 화면, 게임 첫 창
-	int n = 0;
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#define player 4
 
+
+int Print_Game_Rule(); //게임 방법 함수
+void Write_User_Nickname(); //닉네임 입력받는 함수
+void Divide_Class(struct card* _nick_name, struct card* _rank_m); //계급 나누는 함수
+void Card_Deal(struct card* _nick_name); //카드 패 나누고 보여주는 함수
+void Revolution(); //혁명 함수
+void Card_Submit(); //카드 제출 함수
+int King_Order_To_Slave(); //일 시키는 함수
+void Pay_A_Tribute(); //조공(세금) 함수
+void Reorganize_Class(); //계급 재편성 함수
+void Regame(char regame); //게임 계속 진행할 것인지 입력받는 함수
+
+char class[13][10] = { "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노","조커" };//카드 계급
+char Class[4][4] = { "왕", "귀족", "평민", "노예" };
+typedef enum number_cards { Dal, Arch, Si, Mis, Sister, Knight, Seam, Gong, Cook, Shep, Miner, Nong, Joker };
+
+struct  card
+{
+	char Names[10]; //이름 
+	int Cards;  //계급(카드 숫자)
+			//카드 패 함수
+};
+
+int main(struct card* _nick_name) {//메인 화면, 게임 첫 창
+	int input = 0;
+
+MAIN:
 	printf("                위대한 달무티\n\n");
 	printf("             인생은 불공평 합니다.\n\n");
 	printf("1.게임 시작\t2.게임 방법\t3.게임 종료\n\n");
 	printf("              숫자를 입력하시오: \n\n\n");
 	printf("                               전체 화면으로 진행해주세요.\n");
-	scanf("%d", &n); n = 0;
+	scanf("%d", &input); 
 	
-	if (n == 2)
-		manual();
-	if (n == 3)
-		exit(1);
-	if (n == 1)
-		name();
+	switch (input) {
+	case 1:
+		system("cls");
+		Write_User_Nickname();
+		Decide_Divide_Class();
+		break;
+	case 2:
+		system("cls");
+		int _input = Print_Game_Rule();
+		switch (_input) {
+		case 1:
+			system("cls");
+			goto MAIN;
+			break;
+		case 2:
+			break;
+		}
+	case 3:
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     게임을 종료하겠습니다.");
+		break;
+	}
 
+	input = 0;
 	printf("계급을 나누기 위해 카드를 뽑으시겠습니까?(1. 예, 2. 아니요): \n");
-	scanf("%d\n", &n);  n = 0;
+	scanf("%d\n", &input);
 
-	if (n == 2)
+	if (input == 2)
 		exit(1);
 
 	struct card rank_m[player] = { 0 };  //계급 분배(랜덤, 동일한 숫자가 나오지 않게 분배)  
@@ -39,17 +87,17 @@ int main(struct card* _nick_name) {//메인 화면, 게임 첫 창
 	}
 	printf("\n계급\n\n");
 
-	rank(_nick_name, rank_m); //계급 편성 함수 호출
+	Divide_Class(_nick_name, rank_m); //계급 편성 함수 호출
 
-	work(); //왕이 시킬 일 함수 호출
-
+	King_Order_To_Slave(); //왕이 시킬 일 함수 호출
+	input = 0;
 	printf("카드를 배분하시겠습니까?(1. 예, 2. 아니요) ");
-	scanf("%d\n\n", &n); n = 0;
+	scanf("%d\n\n", &input);
 
-	if (n == 2)
+	if (input == 2)
 		exit(1);
 
-	void allot(_nick_name); //카드 배분 함수 호출
+	Card_Deal(_nick_name); //카드 배분 함수 호출
 
 	return 0;
 }
