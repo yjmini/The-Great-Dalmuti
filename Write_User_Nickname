@@ -1,0 +1,10 @@
+void Write_User_Nickname() {//닉네임 
+	struct card nick_name[player] = { 0 };
+
+	printf("플레이어의 닉네임을 차례대로 입력하시오(9자 이내): ");
+	for (int i = 0; i < player; i++)
+		gets(nick_name[i]);
+	printf("지정된 플레이어의 닉네임은\n");
+	for (int i = 0; i < player; i++)
+		printf("%s\n ", nick_name[i].Names);
+}
