@@ -4,42 +4,37 @@
 #include <windows.h>
 #include <time.h>
 
-void Revolution(int* User_Card, char* User_Class) {
+// ìœ ì € êµ¬ì¡°ì²´
+struct User {
+	char name[255];
+	char Class[5];
+	int Card[13];
+};
 
-	// Çõ¸í¹ßµ¿ ½Ã ¾î¶² »óÈ²ÀÌ ÀÏ¾î³ª´ÂÁö Ãâ·Â, °è±Ş º¯È­, Á¶°ø ÆĞ½º Ãß°¡ÇÏ±â
+int Revolution(struct User* User) {
 
-	char input[255] = { 0 };
+	char buf[255] = { 0 };
 
+	if (strcmp(User->Class, "ë†ë…¸") == 0) {
+		if (User->Card[0] == 2) {
+			DECIDE:
+			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%s í”Œë ˆì´ì–´ : í˜ëª…ì„ ì¼ìœ¼í‚¤ê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€\"ì•„ë‹ˆìš”\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤): ", User->name);
+			gets_s(buf, 255);
 
-	if (*(User_Card + 12) == 2) {
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÇõ¸íÀ» ÀÏÀ¸Å°°Ú½À´Ï±î? (\"¿¹\" È¤Àº\"¾Æ´Ï¿ä\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À): ");
-		gets_s(input, 255);
-		if (strcmp(input, "¿¹") == 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÇõ¸íÀÌ ÀÏ¾î³µ½À´Ï´Ù!");
-			if (strcmp(*User_Class, "³ë¿¹") == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t°è±ŞÀÇ º¯È­°¡ »ı°å½À´Ï´Ù.");
+			if (strcmp(buf, "ì˜ˆ") == 0) {
+				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tí˜ëª…ì´ ì¼ì–´ë‚¬ìŠµë‹ˆë‹¤!");
+				// ê³„ê¸‰ ë°”ê¾¸ê¸°, ì¡°ê³µ íŒ¨ìŠ¤ ì¶”ê°€í•˜ê¸°
+				return 1;
 			}
-			else if (strcmp(*User_Class, "¿Õ") == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÁ¶°øÀ» ¹ÙÄ¡Áö ¾Ê¾Æµµ µË´Ï´Ù!");
+			else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) {
+				system("cls");
 			}
-			else if (strcmp(*User_Class, "±ÍÁ·") == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÁ¶°øÀ» ¹ÙÄ¡Áö ¾Ê¾Æµµ µË´Ï´Ù!");
+			else {
+				printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
+				goto DECIDE;
 			}
-			else if (strcmp(*User_Class, "³ó¹Î") == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÁ¶°øÀ» ¹ÙÄ¡Áö ¾Ê¾Æµµ µË´Ï´Ù!");
-			}
-		}
-		else if (strcmp(input, "¾Æ´Ï¿ä") == 0) {
-			system("cls");
-		}
-		else {
-			printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
-			Revolution(*User_Card, *User_Class);
 		}
 	}
-	else {
-		system("cls");
-	}
 
-	
+	return 0;
 }
