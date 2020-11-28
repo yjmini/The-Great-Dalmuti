@@ -1,0 +1,70 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+
+struct user
+{
+	char name[30]; //32정도?
+};
+
+struct card
+{
+	char Names[30]; //이름 
+	int Cards[13]; //번호
+};
+
+
+void Get_Nickname(struct user* user1, struct user* user2, struct user* user3, struct user* user4) {
+	char input[30] = { 0 };
+
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t닉네임 최대 30자(공백 포함)\n\n\n");
+
+	printf("\t\t\t\t\t\t\t\t\t\tuser1의 닉네임을 입력하세요 : ");
+	gets_s(user1->name, 30);
+	printf("\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\tuser2의 닉네임을 입력하세요 : ");
+	gets_s(user2->name, 30);
+	printf("\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\tuser3의 닉네임을 입력하세요 : ");
+	gets_s(user3->name, 30);
+	printf("\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\tuser4의 닉네임을 입력하세요 : ");
+	gets_s(user4->name, 30);
+
+	printf("\n\n\t\t\t\t\t\t\t\t\t\t\t이 닉네임이 맞습니까?\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\tuser1 : %s\n\n", user1->name);
+	printf("\t\t\t\t\t\t\t\t\t\tuser2 : %s\n\n", user2->name);
+	printf("\t\t\t\t\t\t\t\t\t\tuser3 : %s\n\n", user3->name);
+	printf("\t\t\t\t\t\t\t\t\t\tuser4 : %s\n\n", user4->name);
+
+
+
+Check:
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t  이대로 진행하시겠습니까? (\"예\" 혹은 \"아니요\"라고 입력하세요) : ");
+	gets_s(input, 30);
+
+	if (strcmp(input, "예") == 0) {
+		system("cls");
+	}
+	else if (strcmp(input, "아니요") == 0) {
+		system("cls");
+		Get_Nickname(&user1->name, &user2->name, &user3->name, &user4->name);
+	}
+	else {
+		printf("\t\t\t\t\t\t\t\t\t\t\t잘못입력하셨습니다.");
+		goto Check;
+	}
+
+}
+
+/* 작동 확인용
+int main(void)
+{
+	struct user user1, user2, user3, user4;
+
+	Get_Nickname(&user1, &user2, &user3, &user4);
+}
+*/
