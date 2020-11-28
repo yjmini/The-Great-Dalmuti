@@ -8,27 +8,26 @@ void King_Order_To_Slave() {
 	char Order[255] = { 0 };
 	char input[255] = { 0 };
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ³ë¿¹¿¡°Ô ¾î¶² ¸í·ÉÀ» ³»¸®°Ú½À´Ï±î? : ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ë…¸ì˜ˆì—ê²Œ ì–´ë–¤ ëª…ë ¹ì„ ë‚´ë¦¬ê² ìŠµë‹ˆê¹Œ? : ");
 	gets_s(Order, 255);
 
 	system("cls");
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t   Àü´ŞÁß");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t   ì „ë‹¬ì¤‘");
 	Sleep(3000);
 	system("cls");
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ¿ÕÀÇ ¸í·É : ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ì™•ì˜ ëª…ë ¹ : ");
 	puts(Order);
 
 Order:
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t    ¿ÕÀÇ ¸í·ÉÀ» µû¸£¼Ì½À´Ï±î? (\"µû¶ú´Ù\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t    ì™•ì˜ ëª…ë ¹ì„ ë”°ë¥´ì…¨ìŠµë‹ˆê¹Œ? (\"ë”°ëìŠµë‹ˆë‹¤.\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
 	gets_s(input, 255);
 
-	if (strcmp(input, "µû¶ú´Ù") == 0) {
+	if (strcmp(input, "ë”°ëìŠµë‹ˆë‹¤.") == 0) {
 		system("cls");
 	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
+		printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
 		goto Order;
 	}
-
 }
