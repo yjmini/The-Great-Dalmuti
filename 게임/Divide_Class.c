@@ -4,27 +4,33 @@
 #include <windows.h>
 #include <time.h>
 
+// ìœ ì € êµ¬ì¡°ì²´
+struct User {
+	char name[255];
+	char Class[5];
+	int Card[13];
+};
+
 void Decide_Divide_Class() {
 	char input[255] = { 0 };
 
 Divide:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t°è±ÞÀ» ³ª´©½Ã°Ú½À´Ï±î? (\"³ª´«´Ù\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) :  ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì„ ë‚˜ëˆ„ì‹œê² ìŠµë‹ˆê¹Œ? (\"ë‚˜ëˆˆë‹¤\"ë¼ê³  ìž…ë ¥í•˜ì‹œì˜¤) :  ");
 	gets_s(input, 255);
 
-	if (strcmp(input, "³ª´«´Ù") == 0) {
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t°è±ÞÀ» ³ª´©°Ú½À´Ï´Ù.\n");
+	if (strcmp(input, "ë‚˜ëˆˆë‹¤") == 0) {
+		printf("\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì„ ë‚˜ëˆ„ê² ìŠµë‹ˆë‹¤.\n");
 	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
+		printf("\t\t\t\t\t\t\t\t\t\t\tìž˜ëª»ìž…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
 		goto Divide;
 	}
 
 }
 
-void Divide_Class(char* User1_Class, char* User2_Class, char* User3_Class, char* User4_Class, char* User1, char* User2, char* User3, char* User4) {
+void Divide_Class(struct User* User1, struct User* User2, struct User* User3, struct User* User4) {
 
 	int value = 0, index = 0, empty = 0;
-	
 
 	int User_Class_Num[4] = { 0 };
 
@@ -35,25 +41,25 @@ void Divide_Class(char* User1_Class, char* User2_Class, char* User3_Class, char*
 			index = find(User_Class_Num, i, value);
 		} while (index != -1);
 	}
-	
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÌ »ÌÀº ¼ö : %d\n", User1, User_Class_Num[0]);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÌ »ÌÀº ¼ö : %d\n", User2,User_Class_Num[1]);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÌ »ÌÀº ¼ö : %d\n", User3,User_Class_Num[2]);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÌ »ÌÀº ¼ö : %d\n", User4,User_Class_Num[3]);
 
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´ ë½‘ì€ ìˆ˜ : %d\n", User1->name, User_Class_Num[0]);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´ ë½‘ì€ ìˆ˜ : %d\n", User2->name, User_Class_Num[1]);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´ ë½‘ì€ ìˆ˜ : %d\n", User3->name, User_Class_Num[2]);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´ ë½‘ì€ ìˆ˜ : %d\n", User4->name, User_Class_Num[3]);
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ °è±ÞÀ» ÀÔ·ÂÇÏ½Ã¿À : ", User1);
-	gets_s(User1_Class, 255);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ì„ ìž…ë ¥í•˜ì‹œì˜¤ : ", User1->name);
+	gets_s(User1->Class, 5);
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ °è±ÞÀ» ÀÔ·ÂÇÏ½Ã¿À : ", User2);
-	gets_s(User2_Class, 255);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ì„ ìž…ë ¥í•˜ì‹œì˜¤ : ", User2->name);
+	gets_s(User2->Class, 5);
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ °è±ÞÀ» ÀÔ·ÂÇÏ½Ã¿À : ", User3);
-	gets_s(User3_Class, 255);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ì„ ìž…ë ¥í•˜ì‹œì˜¤ : ", User3->name);
+	gets_s(User3->Class, 5);
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ °è±ÞÀ» ÀÔ·ÂÇÏ½Ã¿À : ", User4);
-	gets_s(User4_Class, 255);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ì„ ìž…ë ¥í•˜ì‹œì˜¤ : ", User4->name);
+	gets_s(User4->Class, 5);
 
+	system("cls");
 }
 
 int find(int a[], int size, int value) {
