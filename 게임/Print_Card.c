@@ -4,47 +4,18 @@
 #include <windows.h>
 #include <time.h>
 
-void Print_Card(int* User_Card, char* User, char* User_Class) {
+// ìœ ì € êµ¬ì¡°ì²´
+struct User {
+	char name[255];
+	char Class[5];
+	int Card[13];
+};
 
-	char input[255] = { 0 };
+void Print_Card(struct User* User) {
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ Ä«µå ÆÐ\n", User);
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t1. ´Þ¹«Æ¼ : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t2. ´ëÁÖ±³ : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t3. ½ÃÁ¾Àå : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t4. ³²ÀÛºÎÀÎ : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t5. ¼ö³à¿øÀå : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t6. ±â»ç : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t7. ÀçºÀ»ç : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t8. ¼®°ø : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t9. ¿ä¸®»ç : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t10. ¾çÄ¡±â : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t11. ±¤ºÎ : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t12. ³ó³ë : %d", *User_Card);
-	User_Card++;
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÁ¶Ä¿ : %d", *User_Card);
-	
-CHECK:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå ÆÐ¸¦ È®ÀÎÇÏ¼Ì½À´Ï±î? (\"È®ÀÎ ¿Ï·á\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
-	gets_s(input, 255);
-	if (strcmp(input, "È®ÀÎ ¿Ï·á") == 0) {
-		return 0;
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ íŒ¨\n", User->name);
+	for (int i = 0; i < 13; i++) {
+		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %d\n", i, class[i], User->Card[i]);
 	}
-	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
-		goto CHECK;
-	}
-	
 	
 }
