@@ -3,55 +3,70 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
-#include "Function.h"
 
-char User1[255] = { 0 };
-char User2[255] = { 0 };
-char User3[255] = { 0 };
-char User4[255] = { 0 };
+// 유저 구조체
+struct User {
+	char name[255];
+	char Class[5];
+	int Card[13];
+};
 
-char User1_Class[255] = { 0 };
-char User2_Class[255] = { 0 };
-char User3_Class[255] = { 0 };
-char User4_Class[255] = { 0 };
+#define USER_1 0
+#define USER_2 1
+#define USER_3 2
+#define USER_4 3
 
-int User1_Card[13] = { 0 };
-int User2_Card[13] = { 0 };
-int User3_Card[13] = { 0 };
-int User4_Card[13] = { 0 };
+const char class[13][10] = { "조커", "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노" }; //카드 계급
+
+int preCard_Class = 13; // 이전에 나온 카드의 계급과 비교하기 위한 변수
+int Pay_Card_Num = 0; // 선언한 카드의 개수를 저장할 변수
+int count = 0, count_ = 0; // 턴을 카운트하기 위한 변수
+int Rank = 0; // 등수를 저장할 변수
 
 int main() {
 	srand(time(NULL));
 
-	int input = 0;
+	struct User User[4] = { 0 };
+	int input = 0, Revolution_Return = 0, Decide_Re_Game_Return = 0;
 
 MAIN:
-	printf("��ü ȭ������ �������ּ���.\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t\t������ �޹�Ƽ          \n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t     �λ��� �Ұ��� �մϴ�.       ");
+	printf("전체 화면으로 진행해주세요.\n\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t\t위대한 달무티          \n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t     인생은 불공평 합니다.       ");
 	printf("\n\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t1. ���� ����\t2. ���� ���\t3. ���� ����\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t     ���ڸ� �Է��Ͻÿ� : ");
+	printf("\t\t\t\t\t\t\t\t\t\t1. 게임 시작\t2. 게임 방법\t3. 게임 종료\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t     숫자를 입력하시오 : ");
 	scanf_s("%d", &input);
-	
+
 	switch (input) {
 	case 1:
 		system("cls");
-		Write_User_Nickname(&User1, &User2, &User3, &User4);
+		Write_User_Nickname(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
 		Decide_Divide_Class();
-		Divide_Class(&User1_Class, &User2_Class, &User3_Class, &User4_Class, &User1, &User2, &User3, &User4);
-		Print_Class(&User1_Class, &User2_Class, &User3_Class, &User4_Class, &User1, &User2, &User3, &User4);
+		Divide_Class(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
 		King_Order_To_Slave();
-		Decide_Distribute_Card();
-		Distribute_Card(&User1_Card, &User2_Card, &User3_Card, &User4_Card);
-		Print_Card(&User1_Card, &User1, &User1_Class);
-		Revolution(&User1_Card, &User1_Class);
-		Print_Card(&User2_Card, &User2, &User2_Class);
-		Revolution(&User2_Card, &User2_Class);
-		Print_Card(&User3_Card, &User3, &User3_Class);
-		Revolution(&User3_Card, &User3_Class);
-		Print_Card(&User4_Card, &User4, &User4_Class);
-		Revolution(&User4_Card, &User4_Class);
+		Card_Deal(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
+		Print_Card(&User[USER_1]); Revolution_Return = Revolution(&User[USER_1]);
+		Print_Card(&User[USER_2]); Revolution_Return = Revolution(&User[USER_2]);
+		Print_Card(&User[USER_3]); Revolution_Return = Revolution(&User[USER_3]);
+		Print_Card(&User[USER_4]); Revolution_Return = Revolution(&User[USER_4]);
+
+		if (Revolution_Return == 0) Pay_A_Tribute();
+
+		while (Rank == 4) {
+			for (int i = 0; i < 4; i++) {
+				Print_Card(&User[i]);
+				Play_A_Card(&User[i]);
+				Reorganize_Class(&User[i]);
+			}
+		}
+
+		for (int i = 0; i < 4; i++) Decide_Re_Game_Return = Decide_Re_Game(&User[i]);
+
+		if (Decide_Re_Game_Return == 1) {
+			// 카드 분배부터 다시 시작
+		}
+
 		break;
 	case 2:
 		system("cls");
@@ -65,7 +80,7 @@ MAIN:
 			break;
 		}
 	case 3:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     ������ �����ϰڽ��ϴ�.");
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     게임을 종료하겠습니다.");
 		break;
 	}
 
