@@ -54,7 +54,7 @@ Check:
 		Get_Nickname(&user1->name, &user2->name, &user3->name, &user4->name);
 	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\t잘못입력하셨습니다.");
+		printf("\t\t\t\t\t\t\t\t\t\t\t다시 입력하세요.\n");
 		goto Check;
 	}
 
