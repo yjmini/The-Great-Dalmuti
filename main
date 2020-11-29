@@ -69,20 +69,9 @@ MAIN:
 		exit(1);
 
 	Divide_Class(Dalmuti); //계급 편성 함수 호출
-
 	Card_Deal(Dalmuti); //카드 배분 함수 호출
-
-	if (Revolution(fp, Dalmuti) == 0) {//혁명 함수 호출
-		for(int i=player; i<)
-		Dalmuti[player-3].Names == D_Class;
-		Pay_A_Tribute(**fp, Dalmuti);//조공 함수 호출
-	}
-
-	if (Revolution(fp, Dalmuti) == -1) {//혁명 함수 호출
-		Dalmuti[0].Names == D_Class;
-		Pay_A_Tribute(**fp, Dalmuti);//조공 함수 호출
-	}
-	
+	Revolution(fp, Dalmuti);//혁명 함수 호출
+	Pay_A_Tribute(**fp, Dalmuti);//조공 함수 호출
 	King_Order_To_Slave(); //왕이 시킬 일 함수 호출
 
 	input = 0;
