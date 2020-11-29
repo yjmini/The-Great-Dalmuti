@@ -1,27 +1,60 @@
-void Decide_Divide_Class(struct card* _nick_name, struct card* _rank_m) {
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#define player 4
+#define Joker 2
 
+struct  Card
+{
+	char Names[10]; //이름 
+	int Cards;  //계급(카드 숫자)
+	struct Class class;
+	//각 계급 카드 개수//카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
+};
 
-	char ranking[player][10] = { "왕", "상인", "소작농", "농노" };
-	int best = 0, n = 1;
-	struct card temp, ch;
+struct Class {
+	int Card_s[13];
+};
 
-	for (int i = player - 1; i > 0; i--) //계급 편성(왕, 상인, 소작농, 농노), 출력
-	{
-		for (int j = 0; j < i; j++)
-		{
-			if (_rank_m[j].Cards > _rank_m[j + 1].Cards)
-			{
-				temp = _rank_m[j];
-				_rank_m[j] = _rank_m[j + 1];
-				_rank_m[j + 1] = temp;
-				ch = _nick_name[j];
-				_nick_name[j] = _nick_name[j + 1];
-				_nick_name[j + 1] = ch;
-			}
+D_Class[player][10] = { "왕", "상인", "소작농", "농노" };
+
+void Divide_Class(struct Card* _Dalmuti) {
+
+	printf("각 플레이어의 카드를 무작위로 선정 중입니다.\n");
+	int overlapFlag = 0;
+	//계급 정하기 위한 카드 분배(1~12사이의 숫자카드 분배)
+	srand((unsigned int)time(NULL));
+	 
+		for (int i = 0; i < player; i++) {
+			do{
+				_Dalmuti[i].Cards = (rand() % 12) + 1;
+				//j를 0~i 까지 순회하면서, 중복된 수가 있다면 플래그를 1로 바꿔주어, 난수를 다시 발생시키도록 함
+				for (int j = 0; j < i; j++) {
+					if (_Dalmuti[i].Cards == _Dalmuti[j].Cards)
+						overlapFlag = 1;
+				}
+			} while (overlapFlag);
 		}
-	}
+		printf("\n계급\n\n");
+		int temp = 0; char ch = 0;
+
+		for (int i = player - 1; i > 0; i--) //계급 편성(왕, 상인, 소작농, 농노), 출력
+			for (int j = 0; j < i; j++)
+			{
+				if (_Dalmuti[j].Cards > _Dalmuti[j + 1].Cards)
+				{
+					temp = _Dalmuti[j].Cards;
+					_Dalmuti[j].Cards = _Dalmuti[j + 1].Cards;
+					_Dalmuti[j + 1].Cards = temp;
+					ch = *_Dalmuti[j].Names;
+					*_Dalmuti[j].Names = *_Dalmuti[j + 1].Names;
+					*_Dalmuti[j + 1].Names;
+				}
+			}
 	for (int i = 0; i < player; i++) {
-		printf("%s: %s\n", _nick_name->Names, ranking[i]);
-		(_nick_name++);
+		printf("%s: %s\n", _Dalmuti[i].Names, D_Class[i][10]);
 	}
 }
