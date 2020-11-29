@@ -1,10 +1,30 @@
-void Write_User_Nickname() {//닉네임 
-	struct card nick_name[player] = { 0 };
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#define player 4
+#define Joker 2
 
+struct  Card
+{
+	char Names[10]; //이름 
+	int Cards;  //계급(카드 숫자)
+	struct Class class;
+	//각 계급 카드 개수//카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
+};
+
+struct Class {
+	int Card_s[13];
+};
+
+void Write_User_Nickname(struct Card* _Dalmuti) {//닉네임 
+	
 	printf("플레이어의 닉네임을 차례대로 입력하시오(9자 이내): ");
 	for (int i = 0; i < player; i++)
-		gets(nick_name[i]);
+		gets(_Dalmuti[i]);
 	printf("지정된 플레이어의 닉네임은\n");
 	for (int i = 0; i < player; i++)
-		printf("%s\n ", nick_name[i].Names);
+		printf("%s\n ", _Dalmuti[i].Names);
 }
