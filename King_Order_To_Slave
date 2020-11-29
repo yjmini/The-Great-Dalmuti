@@ -1,26 +1,36 @@
-int King_Order_To_Slave(); {//시킬 일
-	char str[255] = { 0 };
-	int n = 0;
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#define player 4
+#define Joker 2
 
-	printf("왕이 노예에게 시키고 싶은 일을 입력하시오(예, 물 좀 가져와): ");
-	if (gets(str) == NULL) {
-		printf("입력 실패\n");
-		return -1;
+void King_Order_To_Slave() { //시킬 일
+	char Order[255] = { 0 };
+	char input[255] = { 0 };
+
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    노예에게 어떤 명령을 내리겠습니까? : ");
+	gets_s(Order, 255);
+
+	system("cls");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t   전달중");
+	Sleep(3000);
+	system("cls");
+
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    왕의 명령 : ");
+	puts(Order);
+
+Order:
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t    왕의 명령을 따르셨습니까? (\"따랐다\"라고 입력하시오) : ");
+	gets_s(input, 255);
+
+	if (strcmp(input, "따랐다") == 0) {
+		system("cls");
 	}
-
-	while (1) {
-		if (put(str) == EOF) {
-			printf("출력 실패\n");
-			return -1;
-		}
-		else {
-			printf("왕께서 %s라고 하셨습니다.\n", str);
-			printf("왕께서 시킨 일을 다 행하였습니까?(1. 예, 2. 아니요) ");
-			scanf("%d\n\n", &n); n = 0;
-
-			if (n == 1)
-				break;
-		}
+	else {
+		printf("\t\t\t\t\t\t\t\t\t\t\t잘못입력하셨습니다.");
+		goto Order;
 	}
-	return 0;
 }
