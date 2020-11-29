@@ -4,31 +4,32 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
+#include "Header.h"
 #define player 4
+#define Joker 2
 
-int Print_Game_Rule(); //게임 방법 함수
-void Write_User_Nickname(); //닉네임 입력받는 함수
-void Divide_Class(struct card* _nick_name, struct card* _rank_m); //계급 나누는 함수
-void Card_Deal(struct card* _nick_name); //카드 분배
-void Revolution(); //혁명 함수
-void Pay_A_Tribute(); //조공(세금) 함수
-int King_Order_To_Slave(); //일 시키는 함수
-void Card_Submit(); //카드 제출 함수
-void Reorganize_Class(); //계급 재편성 함수
+char Class[13][10] = { "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노","조커" };//카드 계급
+char D_Class[player][10] = { "왕", "상인", "소작농", "농노" };
+typedef enum number_cards { Dal=1, Arch, Si, Mis, Sister, Knight, Seam, Gong, Cook, Shep, Miner, Nong };
+int Total_Card = Dal + Arch + Si + Mis + Sister + Knight + Seam + Gong + Cook + Shep + Miner + Nong + Joker;//80
 
-char class[13][10] = { "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노","조커" };//카드 계급
-char Class[4][4] = { "왕", "귀족", "평민", "노예" };
-typedef enum number_cards { Dal, Arch, Si, Mis, Sister, Knight, Seam, Gong, Cook, Shep, Miner, Nong, Joker };
-
-struct  card
+struct  Card
 {
 	char Names[10]; //이름 
 	int Cards;  //계급(카드 숫자)
-			//카드 패 함수
+	struct Class class; //카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
 };
 
-int main(struct card* _nick_name) {//메인 화면, 게임 첫 창
+struct Class {
+	enum card_ss {//각 계급 카드 개수
+		Dal_c = 0, Arch_c = 0, Si_c = 0, Mis_c = 0, Sister_c = 0, Knight_c = 0, Seam_c = 0, Gong_c = 0,
+		Cook_c = 0, Shep_c = 0, Miner_c = 0, Nong_c = 0, Joker_c = 0}h;
+	int Card_s[13];
+} Card_s[13] = { Dal_c, Arch_c, Si_c, Mis_c, Sister_c, Knight_c, Seam_c, Gong_c, Cook_c, Shep_c, Miner_c, Nong_c, Joker_c };
+
+int main(int** fp) {//메인 화면, 게임 첫 창
 	int input = 0;
+	struct Card Dalmuti[player] = { 0 };
 
 MAIN:
 	printf("                위대한 달무티\n\n");
@@ -36,13 +37,13 @@ MAIN:
 	printf("1.게임 시작\t2.게임 방법\t3.게임 종료\n\n");
 	printf("              숫자를 입력하시오: \n\n\n");
 	printf("                               전체 화면으로 진행해주세요.\n");
-	scanf("%d", &input); 
-	
+	scanf("%d", &input);
+
 	switch (input) {
 	case 1:
 		system("cls");
-		Write_User_Nickname();
-		Decide_Divide_Class();
+		Write_User_Nickname(Dalmuti);
+		Divide_Class(Dalmuti);
 		break;
 	case 2:
 		system("cls");
@@ -67,27 +68,23 @@ MAIN:
 	if (input == 2)
 		exit(1);
 
-	struct card rank_m[player] = { 0 };  //계급 분배(랜덤, 동일한 숫자가 나오지 않게 분배)  
+	Divide_Class(Dalmuti); //계급 편성 함수 호출
 
+	Card_Deal(Dalmuti); //카드 배분 함수 호출
 
-		for (int i = 0; i < player; i++) {
-			rank_m[i].Cards = rand() % 12 + 1;
-			for (int j = 0; j < i; j++) {
-				if (rank_m[i].Cards == rank_m[j].Cards)
-					break;
-				if (i > j) i--;
-			}
-		}
-	
-	for (int i = 0; i < player; i++) {
-		printf("%s: %d\n", _nick_name->Names, rank_m[i].Cards);
-		(_nick_name++);
+	if (Revolution(fp, Dalmuti) == 0) {//혁명 함수 호출
+		for(int i=player; i<)
+		Dalmuti[player-3].Names == D_Class;
+		Pay_A_Tribute(**fp, Dalmuti);//조공 함수 호출
 	}
-	printf("\n계급\n\n");
 
-	Divide_Class(_nick_name, rank_m); //계급 편성 함수 호출
-
+	if (Revolution(fp, Dalmuti) == -1) {//혁명 함수 호출
+		Dalmuti[0].Names == D_Class;
+		Pay_A_Tribute(**fp, Dalmuti);//조공 함수 호출
+	}
+	
 	King_Order_To_Slave(); //왕이 시킬 일 함수 호출
+
 	input = 0;
 	printf("카드를 배분하시겠습니까?(1. 예, 2. 아니요) ");
 	scanf("%d\n\n", &input);
@@ -95,7 +92,7 @@ MAIN:
 	if (input == 2)
 		exit(1);
 
-	Card_Deal(_nick_name); //카드 배분 함수 호출
+
 
 	return 0;
 }
