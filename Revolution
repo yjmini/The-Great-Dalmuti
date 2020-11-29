@@ -1,0 +1,48 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#include "Header.h"
+#define player 4
+#define Joker 2
+
+struct  Card
+{
+	char Names[10]; //이름 
+	int Cards;  //계급(카드 숫자)
+	struct Class class; //카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
+};
+
+struct Class {
+	enum card_ss {//각 계급 카드 개수
+		Dal_c = 0, Arch_c = 0, Si_c = 0, Mis_c = 0, Sister_c = 0, Knight_c = 0, Seam_c = 0, Gong_c = 0,
+		Cook_c = 0, Shep_c = 0, Miner_c = 0, Nong_c = 0, Joker_c = 0
+	}h;
+	int Card_s[13];
+} Card_s[13] = { Dal_c, Arch_c, Si_c, Mis_c, Sister_c, Knight_c, Seam_c, Gong_c, Cook_c, Shep_c, Miner_c, Nong_c, Joker_c };
+
+char D_Class[player][10] = { "왕", "상인", "소작농", "농노" };
+
+int Revolution(int** fp, struct Card* _Dalmuti) {
+	int n = 0;
+	if (_Dalmuti[3].Names) {
+		if (*(*fp + 12) == 2) {
+			printf("혁명을 일으킬 수 있습니다. 혁명을 일으키겠습니까?(1. 예, 2. 아니요): ");
+			scanf("%d", &n);
+
+			if (n == 2)
+				exit(2);
+
+			printf("계급이 뒤바뀌었습니다!!\n\n");
+			printf("계급\n\n");
+			for (int i = player; i > 0; i--) {
+				printf("%s: %s\n", _Dalmuti[i].Names, D_Class[player - i][10]);
+			}
+		}
+		return 0;
+	}
+	else
+		return -1;
+}
