@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-// À¯Àú ±¸Á¶Ã¼
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -12,24 +12,24 @@ struct User {
 	int Total_Card;
 };
 
-int Decide_Re_Game(struct User* User); // °ÔÀÓ °è¼Ó ÁøÇàÇÒ °ÍÀÎÁö ÀÔ·Â¹Þ´Â ÇÔ¼ö
+int Decide_Re_Game(struct User* User); // ê²Œìž„ ê³„ì† ì§„í–‰í•  ê²ƒì¸ì§€ ìž…ë ¥ë°›ëŠ” í•¨ìˆ˜
 
 int Decide_Re_Game(struct User* User) {
 	char buf[255] = { 0 };
 
-	if (strcmp(User->Class, "¿Õ") == 0) {
+	if (strcmp(User->Class, "ì™•") == 0) {
 	PROCEED:
-		printf("°ÔÀÓÀ» °è¼Ó ÁøÇàÇÏ½Ã°Ú½À´Ï±î? (\"¿¹\" È¤Àº \"¾Æ´Ï¿ä\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À): ");
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%s ì™•ê»˜ì„œëŠ” ê²Œìž„ì„ ê³„ì† ì§„í–‰í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€ \"ì•„ë‹ˆìš”\"ë¼ê³  ìž…ë ¥í•˜ì‹œì˜¤): ", User->name);
 		gets_s(buf, 255);
 
-		if (strcmp(buf, "¿¹") == 0) {
+		if (strcmp(buf, "ì˜ˆ") == 0) {
 			return 1;
 		}
-		else if (strcmp(buf, "¾Æ´Ï¿ä") == 0) {
+		else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) {
 			return 0;
 		}
 		else {
-			printf("Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tìž˜ëª» ìž…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
 			goto PROCEED;
 		}
 	}
