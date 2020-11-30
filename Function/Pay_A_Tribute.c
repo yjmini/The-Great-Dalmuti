@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-// ю╞юЗ ╠╦а╤ц╪
+// Л°═Л═─ Й╣╛Л║╟Л╡╢
 struct User {
 	char name[255];
 	char Class[5];
@@ -17,78 +17,78 @@ struct User {
 #define Give_To_Farmer 1
 #define Give_To_Slave 2
 
-int Card_Class_King = 0; // ©уюл ЁК©╧©║╟т аы д╚╣Е ╟Х╠ч
-int Card_Class_Noble = 0; // ╠ма╥юл ЁС╧н©║╟т аы д╚╣Е ╟Х╠ч
-int Card_Class_Farmer = 0; // ЁС╧нюл ╠ма╥©║╟т аы д╚╣Е ╟Х╠ч
-int Card_Class_Slave = 0; // ЁК©╧╟║ ©у©║╟т аы д╚╣Е ╟Х╠ч
+int Card_Class_King = 0; // Л≥∙Л²╢ К┘╦Л≤┬Л≈░Й╡▄ Л╓└ Л╧╢К⌠° ЙЁ└Й╦┴
+int Card_Class_Noble = 0; // Й╥─Л║╠Л²╢ К├█К╞╪Л≈░Й╡▄ Л╓└ Л╧╢К⌠° ЙЁ└Й╦┴
+int Card_Class_Farmer = 0; // К├█К╞╪Л²╢ Й╥─Л║╠Л≈░Й╡▄ Л╓└ Л╧╢К⌠° ЙЁ└Й╦┴
+int Card_Class_Slave = 0; // К┘╦Л≤┬Й╟─ Л≥∙Л≈░Й╡▄ Л╓└ Л╧╢К⌠° ЙЁ└Й╦┴
 
-void Pay_A_Tribute(struct User* User); // а╤╟Ь ╧ыд║╠Б гт╪Ж
+void Pay_A_Tribute(struct User* User); // Л║╟ЙЁ╣ К╟■Л╧≤Й╦╟ М∙╗Л┬≤
 
 void Pay_A_Tribute(struct User* User) {
 
 	int count = 0;
 
-	if (strcmp(User->Class, "©у") == 0) {
+	if (strcmp(User->Class, "Л≥∙") == 0) {
 	KING:
-		printf("ЁК©╧©║╟т ╬Н╤╡ д╚╣Е╦╕ аж╟з╫ю╢о╠Н? : ");
+		printf("К┘╦Л≤┬Л≈░Й╡▄ Л√╢К√╓ Л╧╢К⌠°К╔╪ Лё╪Й╡═Л┼╣К▀┬Й╧▄? : ");
 		scanf_s("%d", &Card_Class_King);
 
 		if (User->Card[Card_Class_King] == 0) {
-			printf("д╚╣Е╟║ ╨на╥гу╢о╢ы.\n");
+			printf("Л╧╢К⌠°Й╟─ К╤─Л║╠М∙╘К▀┬К▀╓.\n");
 			goto KING;
 		}
 
 		User->Card[Card_Class_King] -= Give_To_Slave;
 	}
-	else if (strcmp(User->Class, "╠ма╥") == 0) {
+	else if (strcmp(User->Class, "Й╥─Л║╠") == 0) {
 	NOBLE:
-		printf("ЁС╧н©║╟т ╬Н╤╡ д╚╣Е╦╕ аж╟з╫ю╢о╠Н? : ");
+		printf("К├█К╞╪Л≈░Й╡▄ Л√╢К√╓ Л╧╢К⌠°К╔╪ Лё╪Й╡═Л┼╣К▀┬Й╧▄? : ");
 		scanf_s("%d", &Card_Class_Noble);
 
 		if (User->Card[Card_Class_Noble] == 0) {
-			printf("д╚╣Е╟║ ╨на╥гу╢о╢ы.\n");
+			printf("Л╧╢К⌠°Й╟─ К╤─Л║╠М∙╘К▀┬К▀╓.\n");
 			goto NOBLE;
 		}
 
 		User->Card[Card_Class_Noble] -= Give_To_Farmer;
 	}
-	else if (strcmp(User->Class, "ЁС╧н") == 0) {
+	else if (strcmp(User->Class, "К├█К╞╪") == 0) {
 	FARMER:
-		printf("╠ма╥©║╟т ╬Н╤╡ д╚╣Е╦╕ аж╟з╫ю╢о╠Н? : ");
+		printf("Й╥─Л║╠Й╩≤ Л√╢К√╓ Л╧╢К⌠°К╔╪ Лё╪Й╡═Л┼╣К▀┬Й╧▄? : ");
 		scanf_s("%d", &Card_Class_Farmer);
 
 		if (User->Card[Card_Class_Farmer] == 0) {
-			printf("д╚╣Е╟║ ╨на╥гу╢о╢ы.\n");
+			printf("Л╧╢К⌠°Й╟─ К╤─Л║╠М∙╘К▀┬К▀╓.\n");
 			goto FARMER;
 		}
-		for (int i = Card_Class_Farmer; i >= 0; i--) {
+		for (int i = Card_Class_Farmer; i > 0; i--) {
 			if (User->Card[i] != 0) {
 				count += 1;
 			}
 		}
 		if (count != 0) {
-			printf("ют╥бго╫е д╚╣Е╨╦╢ы юшю╨ ╟Х╠чюл а╦юГгу╢о╢ы.\n");
+			printf("Л·┘К═╔М∙≤Л▀═ Л╧╢К⌠°КЁ╢К▀╓ Л·▒Л²─ ЙЁ└Й╦┴Л²╢ Л║╢Л·╛М∙╘К▀┬К▀╓.\n");
 			goto FARMER;
 		}
 
 		User->Card[Card_Class_Farmer] -= Give_To_Noble;
 	}
-	else if (strcmp(User->Class, "ЁК©╧") == 0) {
+	else if (strcmp(User->Class, "К┘╦Л≤┬") == 0) {
 	SLAVE:
-		printf("©у©║╟т ╬Н╤╡ д╚╣Е╦╕ аж╟з╫ю╢о╠Н? : ");
+		printf("Л≥∙Й╩≤ Л√╢К√╓ Л╧╢К⌠°К╔╪ Лё╪Й╡═Л┼╣К▀┬Й╧▄? : ");
 		scanf_s("%d", &Card_Class_Slave);
 
 		if (User->Card[Card_Class_Slave] == 0) {
-			printf("д╚╣Е╟║ ╨на╥гу╢о╢ы.\n");
+			printf("Л╧╢К⌠°Й╟─ К╤─Л║╠М∙╘К▀┬К▀╓.\n");
 			goto SLAVE;
 		}
-		for (int i = Card_Class_Slave; i >= 0; i--) {
+		for (int i = Card_Class_Slave; i > 0; i--) {
 			if (User->Card[i] != 0) {
 				count += 1;
 			}
 		}
 		if (count != 0) {
-			printf("ют╥бго╫е д╚╣Е╨╦╢ы юшю╨ ╟Х╠чюл а╦юГгу╢о╢ы.\n");
+			printf("Л·┘К═╔М∙≤Л▀═ Л╧╢К⌠°КЁ╢К▀╓ Л·▒Л²─ ЙЁ└Й╦┴Л²╢ Л║╢Л·╛М∙╘К▀┬К▀╓.\n");
 			goto SLAVE;
 		}
 
