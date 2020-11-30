@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-// À¯Àú ±¸Á¶Ã¼
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -12,40 +12,39 @@ struct User {
 	int Total_Card;
 };
 
-int Rank = 0; // µî¼ö¸¦ ÀúÀåÇÒ º¯¼ö
+int Rank = 0; // ë“±ìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
 
-void Reorganize_Class(struct User* User); // °è±Ş ÀçÆí¼º ÇÔ¼ö
+void Reorganize_Class(struct User* User); // ê³„ê¸‰ ì¬í¸ì„± í•¨ìˆ˜
 
 void Reorganize_Class(struct User* User) {
 
-	// °¡Áö°í ÀÖ´Â ÆĞ Áß¿¡¼­ 0°³ÀÎ Ä«µåÀÇ Á¾·ù¸¦ Ä«¿îÆ®ÇÏ¿© ÀúÀåÇÒ º¯¼ö
-	int _Count = 0;
+	// ê°€ì§€ê³  ìˆëŠ” íŒ¨ ì¤‘ì—ì„œ 0ê°œì¸ ì¹´ë“œì˜ ì¢…ë¥˜ë¥¼ ì¹´ìš´íŠ¸í•˜ì—¬ ì €ì¥í•  ë³€ìˆ˜
+	int Count = 0;
 	char buf[255] = { 0 };
 
 	for (int i = 0; i < 13; i++) {
 		if (User->Card[i] == 0) {
-			_Count += 1;
+			Count += 1;
 		}
 	}
 
-	if (_Count == 13) {
-		// µî¼ö¿¡ µû¶ó °è±Ş ºÎ¿©
+	if (Count == 13) {
+		// ë“±ìˆ˜ì— ë”°ë¼ ê³„ê¸‰ ë¶€ì—¬
 		switch (Rank) {
 		case 0:
-			strcpy_s(User->Class, 5, "¿Õ");
+			strcpy_s(User->Class, 5, "ì™•");
 			break;
 		case 1:
-			strcpy_s(User->Class, 5, "±ÍÁ·");
+			strcpy_s(User->Class, 5, "ê·€ì¡±");
 			break;
 		case 2:
-			strcpy_s(User->Class, 5, "³ó¹Î");
+			strcpy_s(User->Class, 5, "ë†ë¯¼");
 			break;
 		case 3:
-			strcpy_s(User->Class, 5, "³ë¿¹");
+			strcpy_s(User->Class, 5, "ë…¸ì˜ˆ");
 			break;
 		}
 
 		Rank++;
-		if (Rank + 1 == 4) Rank = 0;
 	}
 }
