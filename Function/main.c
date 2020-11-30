@@ -46,19 +46,28 @@ MAIN:
 	switch (input) {
 	case 1:
 		system("cls");
+
 		Write_User_Nickname(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
+
 		Decide_Divide_Class();
 		Divide_Class(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
+
 		King_Order_To_Slave();
+
 		Card_Deal(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
-		Print_Card(&User[USER_1]); Check_Card(); Revolution_Return = Revolution(&User[USER_1]);
-		Print_Card(&User[USER_2]); Check_Card(); Revolution_Return = Revolution(&User[USER_2]);
-		Print_Card(&User[USER_3]); Check_Card(); Revolution_Return = Revolution(&User[USER_3]);
-		Print_Card(&User[USER_4]); Check_Card(); Revolution_Return = Revolution(&User[USER_4]);
+		for (int i = 0; i < 4; i++) {
+			Print_Card(&User[i]);
+			Check_Card();
+			Revolution_Return = Revolution(&User[i]);
+		}
 
 		if (Revolution_Return == 0) {
-			Pay_A_Tribute(&User[USER_1]); Pay_A_Tribute(&User[USER_2]); Pay_A_Tribute(&User[USER_3]); Pay_A_Tribute(&User[USER_4]);
-			Get_A_Tribute(&User[USER_1]); Get_A_Tribute(&User[USER_2]); Get_A_Tribute(&User[USER_3]); Get_A_Tribute(&User[USER_4]);
+			for (int i = 0; i < 4; i++) {
+				Pay_A_Tribute(&User[i]);
+			}
+			for (int i = 0; i < 4; i++) {
+				Get_A_Tribute(&User[i]);
+			}
 		}
 		else if (Revolution_Return == 1) {
 			for (int i = 0; i < 4; i++) {
