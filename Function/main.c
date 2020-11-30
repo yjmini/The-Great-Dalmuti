@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-// À¯Àú ±¸Á¶Ã¼
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -22,7 +22,11 @@ struct User {
 #define Give_To_Farmer 1
 #define Give_To_Slave 2
 
-int Rank = 0; // µî¼ö¸¦ ÀúÀåÇÒ º¯¼ö
+int preCard_Class = 13; // ì´ì „ì— ë‚˜ì˜¨ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ë¹„êµí•˜ê¸° ìœ„í•œ ë³€ìˆ˜
+int Declare_Card_Class = 13; // ì„ ì–¸ëœ ì¹´ë“œì˜ ê³„ê¸‰
+int Pay_Card_Num = 0; // ì„ ì–¸í•œ ì¹´ë“œì˜ ê°œìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
+int count = 0; // í„´ì„ ì¹´ìš´íŠ¸í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
+int Rank = 0; // ë“±ìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
 
 int main() {
 	srand((unsigned int)time(NULL));
@@ -31,12 +35,12 @@ int main() {
 	int input = 0, Revolution_Return = 0, Decide_Re_Game_Return = 0;
 
 MAIN:
-	printf("ÀüÃ¼ È­¸éÀ¸·Î ÁøÇàÇØÁÖ¼¼¿ä.\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t\tÀ§´ëÇÑ ´Ş¹«Æ¼          \n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t     ÀÎ»ıÀº ºÒ°øÆò ÇÕ´Ï´Ù.       ");
+	printf("ì „ì²´ í™”ë©´ìœ¼ë¡œ ì§„í–‰í•´ì£¼ì„¸ìš”.\n\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t\tìœ„ëŒ€í•œ ë‹¬ë¬´í‹°          \n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t     ì¸ìƒì€ ë¶ˆê³µí‰ í•©ë‹ˆë‹¤.       ");
 	printf("\n\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t1. °ÔÀÓ ½ÃÀÛ\t2. °ÔÀÓ ¹æ¹ı\t3. °ÔÀÓ Á¾·á\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t     ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ½Ã¿À : ");
+	printf("\t\t\t\t\t\t\t\t\t\t1. ê²Œì„ ì‹œì‘\t2. ê²Œì„ ë°©ë²•\t3. ê²Œì„ ì¢…ë£Œ\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t     ìˆ«ìë¥¼ ì…ë ¥í•˜ì‹œì˜¤ : ");
 	scanf_s("%d", &input);
 
 	switch (input) {
@@ -56,7 +60,6 @@ MAIN:
 			Pay_A_Tribute(&User[USER_1]); Pay_A_Tribute(&User[USER_2]); Pay_A_Tribute(&User[USER_3]); Pay_A_Tribute(&User[USER_4]);
 			Get_A_Tribute(&User[USER_1]); Get_A_Tribute(&User[USER_2]); Get_A_Tribute(&User[USER_3]); Get_A_Tribute(&User[USER_4]);
 		}
-
 		else if (Revolution_Return == 1) {
 			for (int i = 0; i < 4; i++) {
 				Revolution_Class_Change(&User[i]);
@@ -64,17 +67,30 @@ MAIN:
 		}
 
 		while (Rank != 4) {
+
 			for (int i = 0; i < 4; i++) {
 				Print_Card(&User[i]);
 				Play_A_Card(&User[i]);
 				Reorganize_Class(&User[i]);
+
+				if (count == 4) {
+					Declare_Card_Class = 13; preCard_Class = 13; Pay_Card_Num = 0;
+					count = 0;
+					Print_Card(&User[i]);
+					Play_A_Card(&User[i]);
+					Reorganize_Class(&User[i]);
+				}
+
 			}
+
 		}
+
+		if (Rank == 4) Rank = 0;
 
 		for (int i = 0; i < 4; i++) Decide_Re_Game_Return = Decide_Re_Game(&User[i]);
 
 		if (Decide_Re_Game_Return == 1) {
-			// Ä«µå ºĞ¹èºÎÅÍ ´Ù½Ã ½ÃÀÛ
+			// ì¹´ë“œ ë¶„ë°°ë¶€í„° ë‹¤ì‹œ ì‹œì‘
 		}
 
 		break;
@@ -90,7 +106,7 @@ MAIN:
 			break;
 		}
 	case 3:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     °ÔÀÓÀ» Á¾·áÇÏ°Ú½À´Ï´Ù.");
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     ê²Œì„ì„ ì¢…ë£Œí•˜ê² ìŠµë‹ˆë‹¤.");
 		break;
 	}
 
