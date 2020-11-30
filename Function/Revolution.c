@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-// À¯Àú ±¸Á¶Ã¼
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -12,27 +12,30 @@ struct User {
 	int Total_Card;
 };
 
-int Revolution(struct User* User); // Çõ¸í ÇÔ¼ö
+int Revolution(struct User* User); // í˜ëª… í•¨ìˆ˜
 
 int Revolution(struct User* User) {
 
 	char buf[255] = { 0 };
 
-	if (strcmp(User->Class, "³ó³ë") == 0) {
+	if (strcmp(User->Class, "ë†ë…¸") == 0) {
 		if (User->Card[0] == 2) {
 		DECIDE:
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%s ÇÃ·¹ÀÌ¾î : Çõ¸íÀ» ÀÏÀ¸Å°°Ú½À´Ï±î? (\"¿¹\" È¤Àº\"¾Æ´Ï¿ä\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À): ", User->name);
+			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%s í”Œë ˆì´ì–´ : í˜ëª…ì„ ì¼ìœ¼í‚¤ê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€\"ì•„ë‹ˆìš”\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤): ", User->name);
 			gets_s(buf, 255);
 
-			if (strcmp(buf, "¿¹") == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tÇõ¸íÀÌ ÀÏ¾î³µ½À´Ï´Ù!");
+			if (strcmp(buf, "ì˜ˆ") == 0) {
+				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tí˜ëª…ì´ ì¼ì–´ë‚¬ìŠµë‹ˆë‹¤!");
+				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì´ ë’¤ë°”ë€Œê³  ì¡°ê³µì„ ì•ˆë‚´ë„ ë©ë‹ˆë‹¤!\n");
+				Sleep(3000);
+				system("cls");
 				return 1;
 			}
-			else if (strcmp(buf, "¾Æ´Ï¿ä") == 0) {
+			else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) {
 				system("cls");
 			}
 			else {
-				printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
+				printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
 				goto DECIDE;
 			}
 		}
