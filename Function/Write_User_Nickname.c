@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-// À¯Àú ±¸Á¶Ã¼
+// ìœ ì € êµ¬ì¡°ì²´
 struct User {
 	char name[255];
 	char Class[5];
@@ -12,36 +12,36 @@ struct User {
 	int Total_Card;
 };
 
-void Write_User_Nickname(struct User* User1, struct User* User2, struct User* User3, struct User* User4); // ´Ğ³×ÀÓ ÀÔ·Â ÇÔ¼ö
+void Write_User_Nickname(struct User* User1, struct User* User2, struct User* User3, struct User* User4); // ë‹‰ë„¤ì„ ì…ë ¥ í•¨ìˆ˜
 
 void Write_User_Nickname(struct User* User1, struct User* User2, struct User* User3, struct User* User4) {
 	char input[255] = { 0 };
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t´Ğ³×ÀÓ ÃÖ´ë 255ÀÚ(°ø¹éÆ÷ÇÔ)\n\n\n");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\të‹‰ë„¤ì„ ìµœëŒ€ 255ì(ê³µë°±í¬í•¨)\n\n\n");
 
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser1ÀÇ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
-	gets_s(User1->name, 255);
+	printf("\t\t\t\t\t\t\t\t\t\t\tUser1ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
+	gets_s(User1->name, 255); // ì´ ì¤„ì„ ì§€ìš°ë©´ User1ì˜ ë‹‰ë„¤ì„ ì…ë ¥ì´ ìƒëµë¨(ì˜¤ë¥˜)
 	gets_s(User1->name, 255);
 	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser2ÀÇ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+	printf("\t\t\t\t\t\t\t\t\t\t\tUser2ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 	gets_s(User2->name, 255);
 	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser3ÀÇ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+	printf("\t\t\t\t\t\t\t\t\t\t\tUser3ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 	gets_s(User3->name, 255);
 	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser4ÀÇ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+	printf("\t\t\t\t\t\t\t\t\t\t\tUser4ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 	gets_s(User4->name, 255);
 
 
 Check:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t  ´Ğ³×ÀÓÀ» È®ÀÎÇÏ½Ã°Ú½À´Ï±î? (\"¿¹\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t  ë‹‰ë„¤ì„ì„ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
 	gets_s(input, 255);
 
-	if (strcmp(input, "¿¹") == 0) {
+	if (strcmp(input, "ì˜ˆ") == 0) {
 		system("cls");
 	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
+		printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
 		goto Check;
 	}
 }
