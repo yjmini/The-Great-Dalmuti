@@ -1,9 +1,11 @@
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
+#include <limits.h>
 
 struct user
 {
@@ -49,7 +51,7 @@ divide:
 	int b = rand() % 80;
 	int c = rand() % 80;
 	int d = rand() % 80;
-	int max = num[0], min = num[0];
+	int max = num[0], min = INT_MAX;
 	int second = 0, third = 0;
 	
 	num[0] = *(ALL_card + a);
@@ -81,7 +83,8 @@ divide:
 		}
 	}
 
-	printf("%d, %d", max, min); //min?
+	//나중에 지울 거
+	printf("%d, %d", max, min);
 
 	if ((((max != num[0]) && (min != num[0])) && ((max != num[1]) && (min != num[1]))))
 	{
@@ -162,92 +165,92 @@ divide:
 		}
 	}
 
+	//나중에 지울 거 
 	printf("%d, %d, %d, %d", max, second, third, min);
 	
 	for (int i = 0; i < 4; i++)
 	{
-		if (strcmp(max, num[i]) == 0)
+		if (max == num[i])
 		{
-			if (strcmp(max, num[0]) == 0)
+			if (max == num[0])
 			{
-				strcpy(user1->class, "왕");
+				strcpy(user1->class, "노예");
 			}
-			else if (strcmp(max, num[1]) == 0)
+			else if (max == num[1])
 			{
-				strcpy(user2->class, "왕");
+				strcpy(user2->class, "노예");
 			}
-			else if (strcmp(max, num[2]) == 0)
+			else if (max == num[2])
 			{
-				strcpy(user3->class, "왕");
+				strcpy(user3->class, "노예");
 			}
-			else if (strcmp(max, num[3]) == 0)
+			else if (max == num[3])
 			{
-				strcpy(user4->class, "왕");
+				strcpy(user4->class, "노예");
 			}
 		}
 
-		if (strcmp(second, num[i]) == 0)
+		if (second == num[i])
 		{
-			if (strcmp(second, num[0]) == 0)
-			{
-				strcpy(user1->class, "귀족");
-			}
-			else if (strcmp(second, num[1]) == 0)
-			{
-				strcpy(user2->class, "귀족");
-			}
-			else if (strcmp(second, num[2]) == 0)
-			{
-				strcpy(user3->class, "귀족");
-			}
-			else if (strcmp(second, num[3]) == 0)
-			{
-				strcpy(user4->class, "귀족");
-			}
-		}
-
-		if (strcmp(third, num[i]) == 0)
-		{
-			if (strcmp(third, num[0]) == 0)
+			if (second == num[0])
 			{
 				strcpy(user1->class, "평민");
 			}
-			else if (strcmp(third, num[1]) == 0)
+			else if (second == num[1])
 			{
 				strcpy(user2->class, "평민");
 			}
-			else if (strcmp(third, num[2]) == 0)
+			else if (second == num[2])
 			{
 				strcpy(user3->class, "평민");
 			}
-			else if (strcmp(third, num[3]) == 0)
+			else if (second == num[3])
 			{
 				strcpy(user4->class, "평민");
 			}
 		}
 
-		if (strcmp(min, num[i]) == 0)
+		if (third == num[i])
 		{
-			if (strcmp(min, num[0]) == 0)
+			if (third == num[0])
 			{
-				strcpy(user1->class, "노예");
+				strcpy(user1->class, "귀족");
 			}
-			else if (strcmp(min, num[1]) == 0)
+			else if (third == num[1])
 			{
-				strcpy(user2->class, "노예");
+				strcpy(user2->class, "귀족");
 			}
-			else if (strcmp(min, num[2]) == 0)
+			else if (third == num[2])
 			{
-				strcpy(user3->class, "노예");
+				strcpy(user3->class, "귀족");
 			}
-			else if (strcmp(min, num[3]) == 0)
+			else if (third == num[3])
 			{
-				strcpy(user4->class, "노예");
+				strcpy(user4->class, "귀족");
+			}
+		}
+
+		if (min == num[i])
+		{
+			if (min == num[0])
+			{
+				strcpy(user1->class, "왕");
+			}
+			else if (min == num[1])
+			{
+				strcpy(user2->class, "왕");
+			}
+			else if (min == num[2])
+			{
+				strcpy(user3->class, "왕");
+			}
+			else if (min == num[3])
+			{
+				strcpy(user4->class, "왕");
 			}
 		}
 	}
 	
-	//1,2,3,4등 구별은 했는데 계급 출력이 안됨
 
 
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t계급은 다음과 같이 정해졌습니다.\n");
@@ -258,5 +261,16 @@ divide:
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t%s의 계급 : %s\n", user3->name, user3->class);
 
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t%s의 계급 : %s\n", user4->name, user4->class);
+}
 
+//확인용 코드
+
+int main(void)
+{
+	struct user user1, user2, user3, user4;
+	Get_Nickname(&user1, &user2, &user3, &user4);
+	distribute_card(&user1, &user2, &user3, &user4);
+	print_card(&user1, &user2, &user3, &user4);
+    //Decide_Divide_Class();
+	//Divide_Class(&user1, &user2, &user3, &user4);
 }
