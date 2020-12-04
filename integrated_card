@@ -9,7 +9,7 @@ struct user
 {
 	char name[30]; //32정도?
 	int deck[13]; //0-12 몇 장
-} deck[13] = { 0,0,0,0,0,0,0,0,0,0,0,0,0 };
+};
 
 struct card
 {
@@ -31,7 +31,7 @@ void share_card(char* src_deck[], char* des_deck[])
 	{
 		while (1)
 		{
-			
+
 			int random_value = rand() % 80; //랜덤으로 0~79 생성
 
 			des_deck[i] = *(src_deck + random_value); //포인터 산술연산을 이용하여 랜덤 생성된 인덱스의 카드를 나눠줌
@@ -96,6 +96,13 @@ int distribute_card(struct user* user1, struct user* user2, struct user* user3, 
 void print_card(struct user* user1, struct user* user2, struct user* user3, struct user* user4)
 {
 	char input[255] = { 0 };
+	for (int i = 0; i < 13; i++)
+	{
+		user1->deck[i] = 0;
+		user2->deck[i] = 0;
+		user3->deck[i] = 0;
+		user4->deck[i] = 0;
+	}
 	for (int i = 0; i < 20; i++)
 	{
 		if (p1[i] == 0)
@@ -126,11 +133,11 @@ void print_card(struct user* user1, struct user* user2, struct user* user3, stru
 			user1->deck[12]++;
 	}
 
-		
+
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%s의 카드 패>\n", user1->name);
 	for (int i = 0; i < 13; i++)
 	{
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, 858993460 + user1->deck[i]);	//쓰레기값;;
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, user1->deck[i]);	//쓰레기값;;
 	}
 CHECK1:
 	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t카드 패를 확인하셨습니까? (\"확인\"이라고 입력하시오) : ");
@@ -178,7 +185,7 @@ CHECK1:
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%s의 카드 패>\n", user2->name);
 	for (int i = 0; i < 13; i++)
 	{
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, 858993460 + user2->deck[i]);
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, user2->deck[i]);
 	}
 CHECK2:
 	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t카드 패를 확인하셨습니까? (\"확인\"이라고 입력하시오) : ");
@@ -225,7 +232,7 @@ CHECK2:
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%s의 카드 패>\n", user3->name);
 	for (int i = 0; i < 13; i++)
 	{
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, 858993460 + user3->deck[i]);
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, user3->deck[i]);
 	}
 CHECK3:
 	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t카드 패를 확인하셨습니까? (\"확인\"이라고 입력하시오) : ");
@@ -272,7 +279,7 @@ CHECK3:
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%s의 카드 패>\n", user4->name);
 	for (int i = 0; i < 13; i++)
 	{
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, 858993460 + user4->deck[i]);
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%d번 카드 : %d장\n", i, + user4->deck[i]);
 	}
 
 CHECK4:
@@ -285,5 +292,5 @@ CHECK4:
 		printf("\t\t\t\t\t\t\t\t\t\t\t다시 입력하세요.\n");
 		goto CHECK4;
 	}
-	
+
 }
