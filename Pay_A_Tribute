@@ -15,7 +15,7 @@ struct  Card
 {
 	char Names[10]; //이름 
 	int Cards;  //계급(카드 숫자)
-	struct Class class; //카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
+	struct Class *class; //카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
 };
 
 struct Class {
@@ -23,55 +23,53 @@ struct Class {
 		Dal_c = 0, Arch_c = 0, Si_c = 0, Mis_c = 0, Sister_c = 0, Knight_c = 0, Seam_c = 0, Gong_c = 0,
 		Cook_c = 0, Shep_c = 0, Miner_c = 0, Nong_c = 0, Joker_c = 0
 	}h;
-	int Card_s[13];
+	int Card_s;
 } Card_s[13] = { Dal_c, Arch_c, Si_c, Mis_c, Sister_c, Knight_c, Seam_c, Gong_c, Cook_c, Shep_c, Miner_c, Nong_c, Joker_c };
 
-void Pay_A_Tribute(int** fp, struct Card* _Dalmuti) //조공(세금) 함수
-{
-	int a = 0, b = 0;
+int a = 0, b = 0;
 	int A = 0, B = 0;
-	int nong = 0, dal = 0;
-	for (; nong < player; nong++) {
-		if (_Dalmuti[nong].Names == D_Class[3][10]) {//현재 농노의 카드 정보를 보여줌
+	int nong = 3, dal = 0;
+
+
+		if (_Dalmuti[nong].Names) {//현재 농노의 카드 정보를 보여줌
 			printf("%s의 카드\n\n", (_Dalmuti + nong)->Names);
 			for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
-				printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[nong].class.Card_s[j]);
+				printf("%d. %s : %d장\n", j + 1, Class[j][10], *(_fp[nong] + j));
 			printf("\n");
 			printf("자신의 카드 중 숫자가 가장 낮은 카드 2장을 왕에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
-			scanf("%d", &a, &b);
-
+			scanf("%d %d", &a, &b);
 		}
-	}
+
 	for (; dal < player; dal++) {
-		if (_Dalmuti[dal].Names == D_Class[0][10]) {//현재 왕의 카드 정보를 보여줌
+		if (_Dalmuti[dal].Names) {//현재 왕의 카드 정보를 보여줌
 			printf("%s의 카드\n\n", (_Dalmuti + dal)->Names);
 			for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
-				printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[dal].class.Card_s[j]);
+				printf("%d. %s : %d장\n", j + 1, Class[j][10], *(_fp[dal] + j));
 			printf("\n");
 			printf("자신의 카드 중 쓸모 없는 카드 2장을 농노에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
-			scanf("%d", &A, &B);
+			scanf("%d %d", &A, &B);
 		}
 	}
-	(*(*(fp + nong) + a))--; (*((*fp + nong) + b))--; (*((*fp + dal) + A))--; (*((*fp + dal) + B))--; //카드 수 다시 정리
-	(*((*fp + nong) + A))++; (*((*fp + nong) + B))++; (*(*(fp + dal) + a))++; (*(*(fp + dal) + b))++;
+	*(_fp[nong] + a)--; *(_fp[nong] + b)--; *(_fp[dal] + A)--; *(_fp[dal] + B)--; //카드 수 다시 정리
+	*(_fp[nong] + A)++; *(_fp[nong] + B)++; *(_fp[dal] + a)++; *(_fp[dal] + b)++;
 
 	printf("조공 받은 카드를 확인하세요.\n\n");
 	printf("%s의 카드\n\n", (_Dalmuti + nong)->Names);
 	for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
-		printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[nong].class.Card_s[j]);
+		printf("%d. %s : %d장\n", j + 1, Class[j][10], *(_fp[dal] + j));
 	printf("\n");
 
 	printf("%s의 카드\n\n", (_Dalmuti + dal)->Names);
 	for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
-		printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[dal].class.Card_s[j]);
+		printf("%d. %s : %d장\n", j + 1, Class[j][10], *(_fp[dal] + j));
 	printf("\n");
 
 	a = 0, b = 0; A = 0, B = 0;
 	int sang = 0, so = 0;
 
 	for (; so < player; so++) {
-		if (_Dalmuti[so].Names == D_Class[2][10]) {//현재 소작농의 카드 정보를 보여줌
-			printf("%s의 카드\n\n", (_Dalmuti + so)->Names);
+		if (_Dalmuti[2].Names) {//현재 소작농의 카드 정보를 보여줌
+			printf("%s의 카드\n\n", (_Dalmuti + 2)->Names);
 			for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
 				printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[so].class.Card_s[j]);
 			printf("\n");
@@ -80,8 +78,8 @@ void Pay_A_Tribute(int** fp, struct Card* _Dalmuti) //조공(세금) 함수
 		}
 	}
 	for (; sang < player; sang++) {
-		if (_Dalmuti[sang].Names == D_Class[1][10]) {//현재 상인의 카드 정보를 보여줌
-			printf("%s의 카드\n\n", (_Dalmuti + sang)->Names);
+		if (_Dalmuti[1].Names) {//현재 상인의 카드 정보를 보여줌
+			printf("%s의 카드\n\n", (_Dalmuti + 1)->Names);
 			for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
 				printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[sang].class.Card_s[j]);
 			printf("\n");
@@ -103,4 +101,3 @@ void Pay_A_Tribute(int** fp, struct Card* _Dalmuti) //조공(세금) 함수
 	for (int j = 0; j < 13; j++)//분배된 카드 출력, ex) 1.달무티 : 1장
 		printf("%d. %s : %d장\n", j + 1, Class[j][10], _Dalmuti[sang].class.Card_s[j]);
 	printf("\n");
-}
