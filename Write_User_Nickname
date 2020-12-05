@@ -7,28 +7,19 @@
 #define player 4
 #define Joker 2
 
-struct  Card
+struct user//종합 구조체
 {
-	char Names[10]; //이름 
-	int Cards;  //계급(카드 숫자)
-	struct Class *class;
-	//각 계급 카드 개수//카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
+	char name[30]; //유저 닉네임
+	int deck[13]; //유저의 카드 정보 
+	char class[4]; //계급,(왕 상인 소작농 농노)
 };
 
-struct Class {
-	enum card_ss {//각 계급 카드 개수
-		Dal_c = 0, Arch_c = 0, Si_c = 0, Mis_c = 0, Sister_c = 0, Knight_c = 0, Seam_c = 0, Gong_c = 0,
-		Cook_c = 0, Shep_c = 0, Miner_c = 0, Nong_c = 0, Joker_c = 0
-	}h;
-	int Card_s[13];
-} Card_s[13] = { Dal_c, Arch_c, Si_c, Mis_c, Sister_c, Knight_c, Seam_c, Gong_c, Cook_c, Shep_c, Miner_c, Nong_c, Joker_c };
-
-void Write_User_Nickname(struct Card* _Dalmuti) {//닉네임 
+void Write_User_Nickname(struct user* _user){//닉네임 
 	
-	printf("플레이어의 닉네임을 차례대로 입력하시오(9자 이내): ");
-	for (int i = 0; i < player; i++)
-		gets_s(_Dalmuti[i].Names, 10);
+	printf("플레이어의 닉네임을 차례대로 입력하시오(9자 이내):\n");
+	for (int i = 0; i < (player + 1); i++)
+		gets_s(_user[i].name, 10);
 	printf("지정된 플레이어의 닉네임은\n");
-	for (int i = 0; i < player; i++)
-		printf("%s\n ", (_Dalmuti+i)->Names);
+	for (int i = 0; i < (player + 1); i++)
+		printf("%s\n ", _user[i].name);
 }
