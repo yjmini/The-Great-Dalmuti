@@ -13,7 +13,7 @@ struct user//종합 구조체
 {
 	char name[30]; //32정도?
 	int deck[13]; //0-12 몇 장
-	char class[4]; //계급
+	char class[10]; //계급
 
 };
 
