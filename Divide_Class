@@ -11,15 +11,19 @@ struct  Card
 {
 	char Names[10]; //이름 
 	int Cards;  //계급(카드 숫자)
-	struct Class class;
+	struct Class *class;
 	//각 계급 카드 개수//카드 패 함수(내가 무슨 카드를 가지고 있는가에 대한 정보)
 };
 
 struct Class {
-	int Card_s[13];
-};
+	enum card_ss {//각 계급 카드 개수
+		Dal_c = 0, Arch_c = 0, Si_c = 0, Mis_c = 0, Sister_c = 0, Knight_c = 0, Seam_c = 0, Gong_c = 0,
+		Cook_c = 0, Shep_c = 0, Miner_c = 0, Nong_c = 0, Joker_c = 0
+	}h;
+	int Card_s;
+} Card_s[13] = { Dal_c, Arch_c, Si_c, Mis_c, Sister_c, Knight_c, Seam_c, Gong_c, Cook_c, Shep_c, Miner_c, Nong_c, Joker_c };
 
-D_Class[player][10] = { "왕", "상인", "소작농", "농노" };
+char D_Class[player][10] = { "왕", "상인", "소작농", "농노" };
 
 void Divide_Class(struct Card* _Dalmuti) {
 
@@ -39,22 +43,26 @@ void Divide_Class(struct Card* _Dalmuti) {
 			} while (overlapFlag);
 		}
 		printf("\n계급\n\n");
-		int temp = 0; char ch = 0;
-
-		for (int i = player - 1; i > 0; i--) //계급 편성(왕, 상인, 소작농, 농노), 출력
+		int temp = 0;
+		char ch = 0, ch1 = 0, ch2 = 0;
+	
+		for ( int i = player - 1; i > 0; i--)  //계급 편성(왕, 상인, 소작농, 농노), 출력
 			for (int j = 0; j < i; j++)
 			{
-				if (_Dalmuti[j].Cards > _Dalmuti[j + 1].Cards)
+				if ((_Dalmuti + i)->Cards > (_Dalmuti + (j + 1))->Cards)//Cards를 낮은 숫자 카드 부터 나열
 				{
-					temp = _Dalmuti[j].Cards;
-					_Dalmuti[j].Cards = _Dalmuti[j + 1].Cards;
-					_Dalmuti[j + 1].Cards = temp;
-					ch = *_Dalmuti[j].Names;
-					*_Dalmuti[j].Names = *_Dalmuti[j + 1].Names;
-					*_Dalmuti[j + 1].Names;
+					temp = (_Dalmuti + i)->Cards;
+					(_Dalmuti + i)->Cards = (_Dalmuti + (j + 1))->Cards;
+					(_Dalmuti + (j + 1))->Cards = temp;
+					ch = (_Dalmuti + i)->Names;		ch1 = (_Dalmuti + (j + 1))->Names;
+					ch2 = ch;
+					ch = ch1;
+					ch1 = ch2;
 				}
 			}
-	for (int i = 0; i < player; i++) {
-		printf("%s: %s\n", _Dalmuti[i].Names, D_Class[i][10]);
+		
+	for ( int i = 0; i < player; i++) {
+		printf("%s: %s", (_Dalmuti + i)->Names, D_Class[i][10]);
+		//fputs((_Dalmuti + i)->Names); puts(D_Class[i][10]);
 	}
 }
