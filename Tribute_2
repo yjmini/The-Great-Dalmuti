@@ -11,7 +11,6 @@
 #define Farmer 2
 #define Slave 3
 
-
 extern char Class[13][10];//카드 계급
 
 struct user//종합 구조체
@@ -35,8 +34,18 @@ void Pay_A_Tribute(struct user* user) //조공(세금) 함수
 			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
 				printf("%d. %s : %d장\n", k + 1, Class[k], user[i].deck[k]);
 			printf("\n");
+			AERO:
 			printf("자신의 카드 중 숫자가 가장 낮은 카드 2장을 왕에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
 			scanf_s("%d %d", &a, &b);
+
+			if (((user + i)->deck[a - 1]) == 0)
+				goto AERO;
+			if (((user + i)->deck[b - 1]) == 0)
+				goto AERO;
+			if (a > 12 || a < 1)
+				goto AERO;
+			if (b > 12 || b < 1)
+				goto AERO;
 			break;
 		}
 	}
@@ -46,8 +55,18 @@ void Pay_A_Tribute(struct user* user) //조공(세금) 함수
 			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
 				printf("%d. %s : %d장\n", k + 1, Class[k], user[j].deck[k]);
 			printf("\n");
+			BERO:
 			printf("자신의 카드 중 쓸모 없는 카드 2장을 노예에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
 			scanf_s("%d %d", &A, &B);
+
+			if (((user + j)->deck[A - 1]) == 0)
+				goto BERO;
+			if (((user + j)->deck[B - 1]) == 0)
+				goto BERO;
+			if (A > 12 || A < 1)
+				goto BERO;
+			if (B > 12 || B < 1)
+				goto BERO;
 			break;
 		}
 	}
@@ -77,8 +96,13 @@ void Pay_A_Tribute(struct user* user) //조공(세금) 함수
 			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
 				printf("%d. %s : %d장\n", k + 1, Class[k], user[w].deck[k]);
 			printf("\n");
+          CERO:  
 			printf("자신의 카드 중 숫자가 가장 낮은 카드 1장을 귀족에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
 			scanf_s("%d", &c);
+			if (((user + w)->deck[c - 1]) == 0)
+				goto CERO;
+			if (c > 12 || c < 1)
+				goto CERO;			
 			break;
 		}
 	}
@@ -89,8 +113,14 @@ void Pay_A_Tribute(struct user* user) //조공(세금) 함수
 			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
 				printf("%d. %s : %d장\n", k + 1, Class[k], user[e].deck[k]);
 			printf("\n");
+			DERO:
 			printf("자신의 카드 중 쓸모 없는 카드 1장을 평민에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
 			scanf_s("%d", &D);
+			
+			if (((user + e)->deck[D - 1]) == 0)
+				goto DERO;
+			if (D > 12 || D < 1)
+				goto DERO;
 			break;
 		}
 	}
