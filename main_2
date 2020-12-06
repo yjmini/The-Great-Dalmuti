@@ -1,0 +1,46 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#include "Header.h"
+#define player 4
+#define Joker 2
+
+#define King 0
+#define Noble 1
+#define Farmer 2
+#define Slave 3
+
+extern char Class[13][10];//카드 계급
+
+extern int cards[];
+extern int p[4][20];
+
+struct user//종합 구조체
+{
+	char name[30]; //32정도?
+	int deck[13]; //0-12 몇 장
+	char class[10]; //계급
+	int Class_Num;
+};
+
+int main(void)
+{
+	struct user user[4] = { 0 };
+
+	Get_Nickname(user);
+	Decide_Divide_Class();
+	Divide_Class(user);
+	distribute_card(user);
+	print_card(user);
+	int i = 0, j = 0;
+	int a = 0, b = 0;
+	
+	if (Revolution(user) == -1) //혁명 실패 시 조공 함수 실행
+		Pay_A_Tribute(user);
+
+
+	return 0;
+}
