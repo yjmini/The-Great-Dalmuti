@@ -11,13 +11,13 @@ struct user//종합 구조체
 {
 	char name[30]; //유저 닉네임
 	int deck[13]; //유저의 카드 정보 
-	char class[4]; //계급,(왕 귀족 평민 농노)
+	char class[10]; //계급,(왕 귀족 평민 농노)
 };
 
 int Revolution(struct user* user) {//혁명
 	int n = 0;
 	for (int i = 0; i < player; i++) {
-		if (user[i].class == "농노"){
+		if (user[i].class == "노예"){
 			if (user[i].deck[12] == 2){
 				printf("혁명을 일으킬 수 있습니다. 혁명을 일으키겠습니까?(1. 예, 2. 아니요): ");
 				scanf_s("%d", &n);
@@ -29,7 +29,7 @@ int Revolution(struct user* user) {//혁명
 				printf("계급\n\n");
 				for (int j = 0; j < player; j++) {
 					if (user[i].class == "왕")
-						strcpy(user[i].class, "농노");
+						strcpy(user[i].class, "노예");
 					else if (user[i].class == "귀족")
 						strcpy(user[i].class, "평민");
 					else if (user[i].class == "평민")
