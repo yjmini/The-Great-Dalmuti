@@ -10,13 +10,14 @@ struct user {
 	char Class[5];
 	int deck[13];
 	int Class_Num;
+	int Rank;
 };
 
 extern Rank;
 
-void Reorganize_Class(struct user* user) {
+int Reorganize_Class(struct user* user) {
 
-	// °¡Áö°í ÀÖ´Â ÆĞ Áß¿¡¼­ 0°³ÀÎ Ä«µåÀÇ Á¾·ù¸¦ Ä«¿îÆ®ÇÏ¿© ÀúÀåÇÒ º¯¼ö
+	// ê°€ì§€ê³  ìˆëŠ” íŒ¨ ì¤‘ì—ì„œ 0ê°œì¸ ì¹´ë“œì˜ ì¢…ë¥˜ë¥¼ ì¹´ìš´íŠ¸í•˜ì—¬ ì €ì¥í•  ë³€ìˆ˜
 	int Count = 0;
 	char buf[255] = { 0 };
 
@@ -27,19 +28,23 @@ void Reorganize_Class(struct user* user) {
 	}
 
 	if (Count == 13) {
-		// µî¼ö¿¡ µû¶ó °è±Ş ºÎ¿©
+		// ë“±ìˆ˜ì— ë”°ë¼ ê³„ê¸‰ ë¶€ì—¬
 		switch (Rank) {
 		case 0:
-			strcpy(user->Class, "¿Õ");
+			strcpy(user->Class, "ì™•");
+			user->Rank = Rank;
 			break;
 		case 1:
-			strcpy(user->Class, "±ÍÁ·");
+			strcpy(user->Class, "ê·€ì¡±");
+			user->Rank = Rank;
 			break;
 		case 2:
-			strcpy(user->Class, "Æò¹Î");
+			strcpy(user->Class, "í‰ë¯¼");
+			user->Rank = Rank;
 			break;
 		case 3:
-			strcpy(user->Class, "³ë¿¹");
+			strcpy(user->Class, "ë…¸ì˜ˆ");
+			user->Rank = Rank;
 			break;
 		}
 
