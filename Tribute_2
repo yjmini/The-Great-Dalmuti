@@ -1,0 +1,95 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#define player 4
+#define Joker 2
+
+extern char Class[13][10];//카드 계급
+
+struct user//종합 구조체
+{
+	char name[30]; //유저 닉네임
+	int deck[13]; //유저의 카드 정보 
+	char class[4]; //계급,(왕 귀족 평민 농노)
+};
+
+void Pay_A_Tribute(struct user* user) //조공(세금) 함수
+{
+	int a = 0, b = 0;
+	int A = 0, B = 0;
+	int i = 0, j = 0;
+
+	for (i; i < player; i++)
+		if (user[i].class == "농노") {//현재 농노의 카드 정보를 보여줌
+			printf("%s의 카드\n\n", user[i].class);
+			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+				printf("%d. %s : %d장\n", k + 1, Class[k], user[i].deck[k]);
+			printf("\n");
+			printf("자신의 카드 중 숫자가 가장 낮은 카드 2장을 왕에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
+			scanf_s("%d %d", &a, &b);
+			break;
+		}
+	for (j; j < player; j++)
+		if (user[j].class == "왕") {//현재 왕의 카드 정보를 보여줌
+			printf("%s의 카드\n\n", user[j].class);
+			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+				printf("%d. %s : %d장\n", k + 1, Class[k], user[j].deck[k]);
+			printf("\n");
+			printf("자신의 카드 중 쓸모 없는 카드 2장을 농노에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
+			scanf_s("%d %d", &A, &B);
+			break;
+		}
+	(user[i].deck[a - 1])--; (user[i].deck[b - 1])--; (user[i].deck[A - 1])++; (user[i].deck[B - 1])++;
+	(user[j].deck[A - 1])--; (user[j].deck[B - 1])--; (user[j].deck[a - 1])++; (user[j].deck[b - 1])++;
+
+	printf("조공 받은 카드를 확인하세요.\n\n");
+
+	printf("%s의 카드\n\n", user[i].name);
+	for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+		printf("%d. %s : %d장\n", k + 1, Class[k], user[i].deck[k]);
+	printf("\n");
+
+	printf("%s의 카드\n\n", user[j].name);
+	for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+		printf("%d. %s : %d장\n", k + 1, Class[k], user[j].deck[k]);
+	printf("\n");
+
+	a = 0, b = 0; A = 0, B = 0; i = 0, j = 0;
+
+	for (i; i < player; i++)
+		if (user[i].class == "평민") {//현재 평민의 카드 정보를 보여줌
+			printf("%s의 카드\n\n", user[i].name);
+			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+				printf("%d. %s : %d장\n", k + 1, Class[k], user[i].deck[k]);
+			printf("\n");
+			printf("자신의 카드 중 숫자가 가장 낮은 카드 1장을 상인에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
+			scanf_s("%d %d", &a, &b);
+		}
+
+	for (j; j < player; j++)
+		if (user[j].class == "귀족") {//현재 귀족의 카드 정보를 보여줌
+			printf("%s의 카드\n\n", user[j].name);
+			for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+				printf("%d. %s : %d장\n", k + 1, Class[k], user[j].deck[k]);
+			printf("\n");
+			printf("자신의 카드 중 쓸모 없는 카드 1장을 소작농에게 주세요.(카드 번호를 적으시오, 조커는 예외)\n");
+			scanf_s("%d %d", &A, &B);
+		}
+	(user[i].deck[a - 1])--; (user[i].deck[b - 1])--; (user[i].deck[A - 1])++; (user[i].deck[B - 1])++;
+	(user[j].deck[A - 1])--; (user[j].deck[B - 1])--; (user[j].deck[a - 1])++; (user[j].deck[b - 1])++;
+
+	printf("조공 받은 카드를 확인하세요.\n\n");
+
+	printf("%s의 카드\n\n", user[i].name);
+	for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+		printf("%d. %s : %d장\n", k + 1, Class[k], user[i].deck[k]);
+	printf("\n");
+
+	printf("%s의 카드\n\n", user[j].name);
+	for (int k = 0; k < 13; k++)//분배된 카드 출력, ex) 1.달무티 : 1장
+		printf("%d. %s : %d장\n", k + 1, Class[k], user[j].deck[k]);
+	printf("\n");
+}
