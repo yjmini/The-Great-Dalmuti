@@ -60,7 +60,7 @@ DECIDE:
 			printf("\n\t\t\t\t\t\t\t\t\t\t\t입력하신 카드는 가지고 있지 않습니다.\n");
 			goto PAY;
 		}
-		else if (Declare_Card_Class <= Card_Kind && preCard_Class <= Card_Kind) {
+		else if (Declare_Card_Class <= Card_Kind || preCard_Class <= Card_Kind) {
 			printf("\n\t\t\t\t\t\t\t\t\t\t\t입력하신 카드는 낼 수 없습니다.\n");
 			goto PAY;
 		}
