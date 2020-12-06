@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -10,6 +8,7 @@ struct user {
 	char class[10];
 	int deck[13];
 	int Class_Num;
+	int Rank;
 };
 
 extern char Class[13][10];
@@ -23,8 +22,8 @@ extern int cards[];
 extern int p[4][20];
 
 
-void Play_A_Card(struct user* user) {
-
+int Play_A_Card(struct user* user) {
+	if (user->Rank > 0) return 0;
 	system("cls");
 
 	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%s의 카드 패\n", user->name);
@@ -139,4 +138,5 @@ DECIDE:
 	}
 
 	system("cls");
+	return 0;
 }
