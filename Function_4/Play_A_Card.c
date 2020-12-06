@@ -25,7 +25,9 @@ extern int p[4][20];
 
 void Play_A_Card(struct user* user) {
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ Ä«µå ÆĞ\n", user->name);
+	system("cls");
+
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ íŒ¨\n", user->name);
 	for (int i = 0; i < 13; i++) {
 		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %d\n", i, Class[i], user->deck[i]);
 	}
@@ -33,33 +35,33 @@ void Play_A_Card(struct user* user) {
 	int Card_Kind = 0, Card_How = 0, Joker = 0;
 	char buf[255] = { 0 }, buf_[255] = { 0 };
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t¼±¾ğµÈ Ä«µåÀÇ °è±Ş°ú °³¼ö: %d %d\n", Declare_Card_Class, Pay_Card_Num);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\tÀÌÀü ÇÃ·¹ÀÌ¾î°¡ ³½ Ä«µåÀÇ °è±Ş : %d\n", preCard_Class);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t(¼±¾ğµÈ Ä«µåÀÇ °è±Ş°ú ÀÌÀü ÇÃ·¹ÀÌ¾î°¡ ³½ Ä«µåÀÇ °è±ŞÀÌ 13ÀÏ °æ¿ì ´ç½ÅÀÌ ³½ Ä«µå°¡ ±âÁØÀÌ µË´Ï´Ù.)");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\tì„ ì–¸ëœ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ê°œìˆ˜: %d %d\n", Declare_Card_Class, Pay_Card_Num);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\tì´ì „ í”Œë ˆì´ì–´ê°€ ë‚¸ ì¹´ë“œì˜ ê³„ê¸‰ : %d\n", preCard_Class);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t(ì„ ì–¸ëœ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ì´ì „ í”Œë ˆì´ì–´ê°€ ë‚¸ ì¹´ë“œì˜ ê³„ê¸‰ì´ 13ì¼ ê²½ìš° ë‹¹ì‹ ì´ ë‚¸ ì¹´ë“œê°€ ê¸°ì¤€ì´ ë©ë‹ˆë‹¤.)");
 DECIDE:
-	printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ ³»½Ã°Ú½À´Ï±î? (\"³½´Ù\" È¤Àº \"ÆĞ½º\" ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? (ì¡°ì»¤ë¥¼ ì œì™¸í•œ 12ë²ˆ ê¹Œì§€ì˜ ì¹´ë“œë¥¼ ë‚¼ ìˆ˜ ìˆìŠµë‹ˆë‹¤. \"ë‚¸ë‹¤\" í˜¹ì€ \"íŒ¨ìŠ¤\" ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
 	gets_s(buf, 255);
 
-	if (strcmp(buf, "ÆĞ½º") == 0) {
+	if (strcmp(buf, "íŒ¨ìŠ¤") == 0) {
 		count++;
 		system("cls");
 	}
 
-	else if (strcmp(buf, "³½´Ù") == 0) {
+	else if (strcmp(buf, "ë‚¸ë‹¤") == 0) {
 	PAY:
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t¾î¶² Ä«µå¸¦ ³»½Ã°Ú½À´Ï±î? : ");
+		printf("\n\t\t\t\t\t\t\t\t\t\t\tì–´ë–¤ ì¹´ë“œë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
 		scanf_s("%d", &Card_Kind);
 
-		if (Card_Kind >= 13) {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n");
+		if (Card_Kind >= 12) {
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n");
 			goto PAY;
 		}
 		else if (user->deck[Card_Kind] == 0) {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tÀÔ·ÂÇÏ½Å Ä«µå´Â °¡Áö°í ÀÖÁö ¾Ê½À´Ï´Ù.\n");
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œëŠ” ê°€ì§€ê³  ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
 			goto PAY;
 		}
 		else if (Declare_Card_Class <= Card_Kind && preCard_Class <= Card_Kind) {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tÀÔ·ÂÇÏ½Å Ä«µå´Â ³¾ ¼ö ¾ø½À´Ï´Ù.\n");
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œëŠ” ë‚¼ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n");
 			goto PAY;
 		}
 
@@ -71,16 +73,16 @@ DECIDE:
 
 		if (user->deck[12] > 0) {
 		JOKER:
-			printf("\n\t\t\t\t\t\t\t\t\t\t\t¾î¸´ ±¤´ë¸¦ ³»½Ã°Ú½À´Ï±î? (\"¿¹\" È¤Àº \"¾Æ´Ï¿ä\" ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tì–´ë¦¿ ê´‘ëŒ€ë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€ \"ì•„ë‹ˆìš”\" ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
 			gets_s(buf_, 255);
 
-			if (strcmp(buf_, "¿¹") == 0) {
+			if (strcmp(buf_, "ì˜ˆ") == 0) {
 			HOW_JOKER:
-				printf("\n\t\t\t\t\t\t\t\t\t\t\t¾î¸´ ±¤´ë¸¦ ¸î Àå ³»½Ã°Ú½À´Ï±î? : ");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì–´ë¦¿ ê´‘ëŒ€ë¥¼ ëª‡ ì¥ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
 				scanf_s("%d", &Joker);
 
 				if (Joker > user->deck[12]) {
-					printf("\n\t\t\t\t\t\t\t\t\t\t\t³Ê¹« ¸¹ÀÌ ³»¼Ì½À´Ï´Ù.\n");
+					printf("\n\t\t\t\t\t\t\t\t\t\t\të„ˆë¬´ ë§ì´ ë‚´ì…¨ìŠµë‹ˆë‹¤.\n");
 					goto HOW_JOKER;
 				}
 
@@ -89,24 +91,24 @@ DECIDE:
 					goto HOW_CARD;
 				}
 			}
-			else if (strcmp(buf_, "¾Æ´Ï¿ä") == 0) goto HOW_CARD;
+			else if (strcmp(buf_, "ì•„ë‹ˆìš”") == 0) goto HOW_CARD;
 			else {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
 				goto JOKER;
 			}
 		}
 
 	HOW_CARD:
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%s¸¦ ¸î Àå ³»½Ã°Ú½À´Ï±î? : ", Class[Card_Kind]);
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%së¥¼ ëª‡ ì¥ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ", Class[Card_Kind]);
 		scanf_s("%d", &Card_How);
 
 		if (Joker > 0) {
 			if (Pay_Card_Num > Card_How + Joker) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ ´õ ³»¼Å¾ßÇÕ´Ï´Ù.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ ë” ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n");
 				goto HOW_CARD;
 			}
 			else if (Pay_Card_Num < Card_How + Joker) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ ¸¹ÀÌ ³»¼Ì½À´Ï´Ù.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ ë§ì´ ë‚´ì…¨ìŠµë‹ˆë‹¤.\n");
 				goto HOW_CARD;
 			}
 			else user->deck[Card_Kind] -= Card_How;
@@ -114,15 +116,15 @@ DECIDE:
 
 		else {
 			if (user->deck[Card_Kind] < Card_How) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\t¼ÒÀ¯ÇÏ½Å Ä«µå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì†Œìœ í•˜ì‹  ì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
 				goto HOW_CARD;
 			}
 			else if (Pay_Card_Num > Card_How) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ %dÀå ´õ ³»¼Å¾ßÇÕ´Ï´Ù.\n", Pay_Card_Num - Card_How);
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ %dì¥ ë” ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n", Pay_Card_Num - Card_How);
 				goto HOW_CARD;
 			}
 			else if (Pay_Card_Num > 0 && Pay_Card_Num < Card_How) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ %dÀå ´õ ³»¼Ì½À´Ï´Ù.\n", Card_How - Pay_Card_Num);
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ %dì¥ ë” ë‚´ì…¨ìŠµë‹ˆë‹¤.\n", Card_How - Pay_Card_Num);
 				goto HOW_CARD;
 			}
 			else user->deck[Card_Kind] -= Card_How;
@@ -132,7 +134,7 @@ DECIDE:
 		count++;
 	}
 	else {
-		printf("\n\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
+		printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
 		goto DECIDE;
 	}
 
