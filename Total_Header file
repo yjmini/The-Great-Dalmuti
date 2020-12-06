@@ -1,0 +1,29 @@
+#pragma once
+
+int Manual();
+void Get_Nickname(struct user* user);
+void Decide_Divide_Class();
+void Divide_Class(struct user* user);
+void share_card(int* src_deck[], int* des_deck[]);
+int distribute_card(struct user* user);
+void print_card(struct user* user);
+int Revolution(struct user* user); //혁명 함수
+void Pay_A_Tribute(struct user* user);//조공(세금) 함수
+void King_Order_To_Slave(); //일 시키는 함수
+void Play_A_Card(struct user* User);
+int Decide_Re_Game(struct user* User);
+void Reorganize_Class(struct user* User);
+void Print_Card(struct user* User);
+
+int preCard_Class = 13; // 이전에 나온 카드의 계급과 비교하기 위한 변수
+int Declare_Card_Class = 13; // 선언된 카드의 계급
+int Pay_Card_Num = 0; // 선언한 카드의 개수를 저장할 변수
+int count = 0; // 턴을 카운트하기 위한 변수
+int Rank = 0; // 등수를 저장할 변수
+
+char Class[13][10] = { "달무티", "대주교","시종장","남작부인","수녀원장","기사","재봉사","석공","요리사","양치기","광부","농노", "조커" };//카드 계급
+
+int cards[] = { 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 
+7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10,
+10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,13,13 };
+int p[4][20] = { 0 };
