@@ -12,6 +12,7 @@ struct user//종합 구조체
 	char name[30]; //유저 닉네임
 	int deck[13]; //유저의 카드 정보 
 	char class[10]; //계급,(왕 귀족 평민 농노)
+	int Class_Num;
 };
 
 int Revolution(struct user* user) {//혁명
