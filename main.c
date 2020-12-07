@@ -5,12 +5,13 @@
 #include <time.h>
 #include <windows.h>
 
-// ìœ ì € êµ¬ì¡°ì²´
+// À¯Àú ±¸Á¶Ã¼
 struct User {
 	char name[30];
-	char Class[5];
-	int deck[13];
 	int Class_Num;
+	char Class[10];
+	int deck[13];
+	int Rank;
 };
 
 #define USER_1 0
@@ -18,109 +19,76 @@ struct User {
 #define USER_3 2
 #define USER_4 3
 #define Player 4
-#define Give_To_King 2
-#define Give_To_Noble 1
-#define Give_To_Farmer 1
-#define Give_To_Slave 2
 #define King 0
 #define Noble 1
 #define Farmer 2
 #define Slave 3
 
-int Print_Game_Role(); // ê²Œì„ ë°©ë²• ì¶œë ¥ í•¨ìˆ˜
-void Write_User_Nickname(struct User* User1, struct User* User2, struct User* User3, struct User* User4); // ë‹‰ë„¤ì„ ì…ë ¥ í•¨ìˆ˜
-void Decide_Divide_Class(); // ê³„ê¸‰ ë‚˜ëˆ„ê¸° ê²°ì • í•¨ìˆ˜
-void _Divide_Class(struct User* user1, struct User* user2, struct User* user3, struct User* user4); // ê³„ê¸‰ ë‚˜ëˆ„ê¸° í•¨ìˆ˜
-void King_Order_To_Slave(); // ì™•ì´ ë…¸ì˜ˆì—ê²Œ ì¼ì„ ì‹œí‚¤ëŠ” í•¨ìˆ˜
-int Revolution(struct User* User); // í˜ëª… í•¨ìˆ˜
-void Revolution_Class_Change(struct User* User); // í˜ëª… - ê³„ê¸‰ ë°”ê¾¸ê¸°
-void Pay_A_Tribute(struct User* User); // ì¡°ê³µ ë°”ì¹˜ê¸° í•¨ìˆ˜
-void Get_A_Tribute(struct User* User); // ì¡°ê³µ ë°›ê¸° í•¨ìˆ˜
-void Play_A_Card(struct User* User); // ì¹´ë“œ ë‚´ê¸° í•¨ìˆ˜
-void Reorganize_Class(struct User* User); // ê³„ê¸‰ ì¬í¸ì„± í•¨ìˆ˜
-int Decide_Re_Game(struct User* User); // ê²Œì„ ê³„ì† ì§„í–‰í•  ê²ƒì¸ì§€ ì…ë ¥ë°›ëŠ” í•¨ìˆ˜
-void Print_Card(struct User* User);
-void share_card(char* src_deck[], char* des_deck[]);
-void distribute_card(struct User* user1, struct User* user2, struct User* user3, struct User* user4);
-void print_card(struct User* user1, struct User* user2, struct User* user3, struct User* user4);
+int Print_Game_Role(); 
+void Get_Nickname(struct User* user);
+// user1ºÎÅÍ ´Ğ³×ÀÓÀ» forÀ¸·Î ¹ŞÀ» ¶§ user1 ´Ğ³×ÀÓÀÌ ÀÔ·ÂÀÌ ¾ÈµÇ¼­ user1¸¸ µû·Î ÀÔ·Â¹Ş°ÔÇØ³ù½À´Ï´Ù.
+// switch-case¹® ¹Û¿¡¼­´Â Á¦´ë·Î ÀÔ·ÂÀÌ ¹Ş¾ÆÁ³´Âµ¥, ¾Æ¸¶ Á¦ »ı°¢¿¡´Â switch-case¹®À¸·Î µé¾î°¥¶§ ÀÔ·ÂÀÌ ¾ÈµÇ´Â °Å °°¾Æ¿ä. 
+// user1 ´Ğ³×ÀÓ ÀÔ·Â¹ŞÀ» ¶§ gets_s µÎ¹ø¾´ ÀÌÀ¯´Â ÇÑÁÙ¸¸ ¾²¸é ÀÌ°Íµµ ÀÔ·ÂÀÌ ¾ÈµÇ¼­ µÎÁÙÀ» ¾²´Ï±î ÀÔ·ÂÀÌ µÇ´õ¶ó±¸¿ä.
+// È¤½Ã Á¦ ÄÄÇ»ÅÍ ¹®Á¦ÀÏ¼öµµ ÀÖÀ¸´Ï±î for¹® ¾È¿¡ ³ÖÀ¸¼Å¼­ ½ÇÇàÇØº¸¼Åµµ ±¦ÂúÀ»²¨°°¾Æ¿ä!
+void Decide_Divide_Class(); 
+void Divide_Class(struct User* user);
+void share_card(int* src_deck[], int* des_deck[]);
+int distribute_card(struct User* user);
+void print_card(struct User* user);
+// Ä«µå È®ÀÎÇÏ¿´´ÂÁö ÀÔ·Â¹Ş´Â°Å Ãß°¡Çß¾î¿ä
+void King_Order_To_Slave(); 
+int Revolution(struct User* user);
+// ¹®ÀÚ¿­ ºñ±³¿¡¼­ Class_Num ºñ±³·Î ¹Ù²å¾î¿ä.
+// Çõ¸í ÀÌÈÄ °è±Ş Ãâ·Â Ãß°¡Çß½À´Ï´Ù.
+void Pay_A_Tribute(struct User* User); 
+// Á¶Ä¿¸¦ 0¹øÀ¸·Î ÇÏµµ·Ï Çß¾î¿ä.
+int Play_A_Card(struct User* User); 
+int Reorganize_Class(struct User* User); 
+void Print_Game_Result(struct User* user);
 
-int preCard_Class = 13; // ì´ì „ì— ë‚˜ì˜¨ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ë¹„êµí•˜ê¸° ìœ„í•œ ë³€ìˆ˜
-int Declare_Card_Class = 13; // ì„ ì–¸ëœ ì¹´ë“œì˜ ê³„ê¸‰
-int Pay_Card_Num = 0; // ì„ ì–¸í•œ ì¹´ë“œì˜ ê°œìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
-int count = 0; // í„´ì„ ì¹´ìš´íŠ¸í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
-int Rank = 0; // ë“±ìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
+int preCard_Class = 13;
+int Declare_Card_Class = 13;
+int Pay_Card_Num = 0; 
+int count = 0; 
+int Rank = 0; 
 
-char* ALL_card[80] = { 0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12 };
+int cards[] = { 0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12 };
 
-int Card_Class_King = 0; // ì™•ì´ ë…¸ì˜ˆì—ê²Œ ì¤„ ì¹´ë“œ ê³„ê¸‰
-int Card_Class_King_ = 0; // ì™•ì´ ë…¸ì˜ˆì—ê²Œ ì¤„ ì¹´ë“œ ê³„ê¸‰
-int Card_Class_Noble = 0; // ê·€ì¡±ì´ ë†ë¯¼ì—ê²Œ ì¤„ ì¹´ë“œ ê³„ê¸‰
-int Card_Class_Farmer = 0; // ë†ë¯¼ì´ ê·€ì¡±ì—ê²Œ ì¤„ ì¹´ë“œ ê³„ê¸‰
-int Card_Class_Slave = 0; // ë…¸ì˜ˆê°€ ì™•ì—ê²Œ ì¤„ ì¹´ë“œ ê³„ê¸‰
-int Card_Class_Slave_ = 0; // ë…¸ì˜ˆê°€ ì™•ì—ê²Œ ì¤„ ì¹´ë“œ ê³„ê¸‰
+int p[4][20] = { 0 };
 
-char* cards[] = { 0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12 };
-
-char* p1[20] = { 0 };
-char* p2[20] = { 0 };
-char* p3[20] = { 0 };
-char* p4[20] = { 0 };
-
-const char class[13][10] = { "ì¡°ì»¤", "ë‹¬ë¬´í‹°", "ëŒ€ì£¼êµ","ì‹œì¢…ì¥","ë‚¨ì‘ë¶€ì¸","ìˆ˜ë…€ì›ì¥","ê¸°ì‚¬","ì¬ë´‰ì‚¬","ì„ê³µ","ìš”ë¦¬ì‚¬","ì–‘ì¹˜ê¸°","ê´‘ë¶€","ë…¸ì˜ˆ" }; //ì¹´ë“œ ê³„ê¸‰
+const char class[13][10] = { "Á¶Ä¿", "´Ş¹«Æ¼", "´ëÁÖ±³","½ÃÁ¾Àå","³²ÀÛºÎÀÎ","¼ö³à¿øÀå","±â»ç","ÀçºÀ»ç","¼®°ø","¿ä¸®»ç","¾çÄ¡±â","±¤ºÎ","³ë¿¹" }; 
 
 int main() {
 	srand((unsigned int)time(NULL));
 
 	struct User User[Player] = { 0 };
-	int input = 0, Revolution_Return = 0, Decide_Re_Game_Return = 0;
+	int input = 0, Revolution_Return = 0;
 
 MAIN:
-	printf("ì „ì²´ í™”ë©´ìœ¼ë¡œ ì§„í–‰í•´ì£¼ì„¸ìš”.\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t\tìœ„ëŒ€í•œ ë‹¬ë¬´í‹°          \n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t     ì¸ìƒì€ ë¶ˆê³µí‰ í•©ë‹ˆë‹¤.       ");
+	printf("ÀüÃ¼ È­¸éÀ¸·Î ÁøÇàÇØÁÖ¼¼¿ä.\n\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t\tÀ§´ëÇÑ ´Ş¹«Æ¼          \n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t     ÀÎ»ıÀº ºÒ°øÆò ÇÕ´Ï´Ù.       ");
 	printf("\n\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t1. ê²Œì„ ì‹œì‘\t2. ê²Œì„ ë°©ë²•\t3. ê²Œì„ ì¢…ë£Œ\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t     ìˆ«ìë¥¼ ì…ë ¥í•˜ì‹œì˜¤ : ");
+	printf("\t\t\t\t\t\t\t\t\t\t1. °ÔÀÓ ½ÃÀÛ\t2. °ÔÀÓ ¹æ¹ı\t3. °ÔÀÓ Á¾·á\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t     ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ½Ã¿À : ");
 	scanf_s("%d", &input);
 
 	switch (input) {
 	case 1:
 		system("cls");
 
-		Write_User_Nickname(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]); // ë‹‰ë„¤ì„ì„ ì…ë ¥ë°›ëŠ”ë‹¤.
+		Get_Nickname(User);
 
-		// ê³„ê¸‰ ë¶„ë°°ë¥¼ í•œë‹¤.
-		Decide_Divide_Class(); 
-		_Divide_Class(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
+		Decide_Divide_Class();
+		Divide_Class(User);
 
-	ORDER:
-		King_Order_To_Slave(); // ì™•ì´ ëª…ë ¹ì„ ë‚´ë¦°ë‹¤.
+		King_Order_To_Slave();
+		
+		distribute_card(User);
+		print_card(User);
 
-		// ì¹´ë“œ ë¶„ë°° ë° ì¶œë ¥
-		distribute_card(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
-		print_card(&User[USER_1], &User[USER_2], &User[USER_3], &User[USER_4]);
-
-		// ë°˜ë³µë¬¸ì„ ëŒë ¤ ì¡°ê±´ì— ë§ëŠ” ìœ ì €ê°€ ìˆìœ¼ë©´ í˜ëª…ì˜ ì—¬ë¶€ë¥¼ ë¬¼ì–´ë³¸ë‹¤.
-		for (int i = 0; i < 4; i++) Revolution_Return = Revolution(&User[i]);
-
-		// í˜ëª…í•¨ìˆ˜ì˜ ë¦¬í„´ê°’ì˜ ì¡°ê±´
-		// í˜ëª…í•¨ìˆ˜ì˜ ë¦¬í„´ê°’ 0 : ì¡°ê³µ ë°”ì¹˜ê¸° ë° ë°›ê¸°
-		if (Revolution_Return == 0) {
-			for (int i = 0; i < 4; i++) {
-				Print_Card(&User[i]);
-				Pay_A_Tribute(&User[i]);
-				system("cls");
-			}
-			for (int i = 0; i < 4; i++) {
-				Get_A_Tribute(&User[i]);
-			}
-		}
-		// í˜ëª…í•¨ìˆ˜ì˜ ë¦¬í„´ê°’ 1 : ì¡°ê³µ íŒ¨ìŠ¤ ë° ê³„ê¸‰ ë’¤ë°”ë€Œê¸°
-		else if (Revolution_Return == 1) {
-			for (int i = 0; i < 4; i++) {
-				Revolution_Class_Change(&User[i]);
-			}
-		}
+		if (Revolution(User) == -1) 
+			Pay_A_Tribute(User);
 
 		int User_Num[4] = { 0 };
 		int _count = 0;
@@ -135,34 +103,19 @@ MAIN:
 		while (Rank != 4) {
 			for (int i = 0; i < 4; i++) {
 
-				for (int j = 0; j < 13; j++) {
-					if (User[i].deck[j] == 0) {
-						_count += 1;
-					}
-				}
-				if (_count == 13) {
-					_count = 0;
-					continue;
-				}
-				else _count = 0;
-
-				Print_Card(&User[User_Num[i]]);
 				Play_A_Card(&User[User_Num[i]]);
 				Reorganize_Class(&User[User_Num[i]]);
 
 				if (count == 4) {
 					Declare_Card_Class = 13; preCard_Class = 13; Pay_Card_Num = 0;
 					count = 0;
-					Print_Card(&User[User_Num[i]]);
 					Play_A_Card(&User[User_Num[i]]);
 					Reorganize_Class(&User[User_Num[i]]);
 				}
 			}
 		}
 
-		for (int i = 0; i < 4; i++) Decide_Re_Game_Return = Decide_Re_Game(&User[i]);
-
-		if (Decide_Re_Game_Return == 1) goto ORDER;
+		Print_Game_Result(User); 
 
 		break;
 	case 2:
@@ -177,7 +130,7 @@ MAIN:
 			break;
 		}
 	case 3:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     ê²Œì„ì„ ì¢…ë£Œí•˜ê² ìŠµë‹ˆë‹¤.");
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t     °ÔÀÓÀ» Á¾·áÇÏ°Ú½À´Ï´Ù.");
 		break;
 	}
 
@@ -189,80 +142,91 @@ int Print_Game_Role() {
 	int input = 0;
 
 	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t\t**********ê²Œì„ ë°©ë²•**********\n\n");
-	printf("\t\t\t\t1. ê³„ê¸‰ì„ ì •í•˜ê¸° ìœ„í•´ ì¹´ë“œë¥¼ í•œ ì¥ì”© ë½‘ëŠ”ë‹¤. ê°€ì¥ ì‘ì€ ìˆ˜ë¥¼ ë½‘ì€ ì‚¬ëŒì´ ì™•ì´ ë˜ê³  ìˆœì„œëŒ€ë¡œ ê·€ì¡±, í‰ë¯¼, ë…¸ì˜ˆê°€ ëœë‹¤.\n\n");
-	printf("\t\t\t\t2. ê³„ê¸‰ì´ í¸ì„±ì´ ë˜ì—ˆë‹¤ë©´ ì™•ì€ ë…¸ì˜ˆì—ê²Œ ì‹œí‚¤ê³  ì‹¶ì€ ê²ƒì„ ì‹œí‚¨ë‹¤.\n\n");
-	printf("\t\t\t\t3. ë…¸ì˜ˆê°€ ì¼ì´ ëë‚¬ë‹¤ë©´ ì¹´ë“œë¥¼ í”Œë ˆì´ì–´ ìˆ˜ë§Œí¼ ë˜‘ê°™ì´ ë¶„ë°°í•œë‹¤.\n");
-	printf("\t\t\t\t\t3-1. ì´ë•Œ, ì¡°ì»¤ê°€ 2ì¥ì´ ìˆë‹¤ë©´ í˜ëª…ì„ ì¼ìœ¼í‚¬ ìˆ˜ ìˆë‹¤.\n");
-	printf("\t\t\t\t\t3-2. ë…¸ì˜ˆê°€ í˜ëª…ì„ ì¼ìœ¼í‚¤ë©´ ê³„ê¸‰ì€ ì—­ìˆœìœ¼ë¡œ ë°”ë€ë‹¤. \n");
-	printf("\t\t\t\t\t3-3. ë‹¤ë¥¸ ì‹ ë¶„ì´ í˜ëª…ì„ ì¼ìœ¼í‚¤ë©´ ì¡°ê³µì„ ë°”ì¹˜ì§€ ì•Šê³  ê²Œì„ì´ ì§„í–‰ëœë‹¤.\n\n");
-	printf("\t\t\t\t4. ì¹´ë“œë¥¼ ë‹¤ ë°›ì•˜ë‹¤ë©´ ì´ì œ ì¡°ê³µì„ ë°”ì³ì•¼ í•œë‹¤. ì¡°ê³µì€ ë‹¤ìŒê³¼ ê°™ì€ ê·œì¹™ìœ¼ë¡œ ë°”ì³ì•¼ í•œë‹¤.\n");
-	printf("\t\t\t\t\t4-1. ë…¸ì˜ˆëŠ” ì™•ì—ê²Œ ìì‹ ì˜ ì¹´ë“œ ì¤‘ ìˆ«ìê°€ ê°€ì¥ ì‘ì€ ì¹´ë“œ 2ì¥ì„ ê³µì†í•˜ê²Œ ì™•ì—ê²Œ ì¤€ë‹¤.\n");
-	printf("\t\t\t\t\t4-2. ì™•ì€ ë…¸ì˜ˆì—ê²Œ ìì‚°ì˜ ì¹´ë“œ ì¤‘ ê°€ì¥ ì“¸ëª¨ì—†ì„ ê²ƒ ê°™ì€ ì¹´ë“œ 2ì¥ì„ ì¤€ë‹¤.\n");
-	printf("\t\t\t\t\t4-3. í‰ë¯¼ì€ ê·€ì¡±ì—ê²Œ ë…¸ì˜ˆì™€ ê°™ì€ ë°©ì‹ìœ¼ë¡œ ì¹´ë“œ 1ì¥, ê·€ì¡±ì€ í‰ë¯¼ì—ê²Œ ì™•ê³¼ ê°™ì€ ë°©ì‹ìœ¼ë¡œ ì¹´ë“œ 1ì¥ì„ ì¤€ë‹¤.\n\n");
-	printf("\t\t\t\t5. ì¡°ê³µì„ ë‹¤ ë°”ì³¤ë‹¤ë©´ ì™•ì´ ì„ ì´ ë˜ì–´ ì‹œì‘í•œë‹¤. ì›í•˜ëŠ” ì¹´ë“œë¥¼ ì›í•˜ëŠ” ìˆ˜ ë§Œí¼ ë‚¼ ìˆ˜ ìˆê³ , ì´ë•Œ ì „ë¶€ ê°™ì€ ìˆ˜ê°€ ì íŒ ì¹´ë“œì—¬ì•¼ í•œë‹¤.\n\n");
-	printf("\t\t\t\t6. ê³„ê¸‰ ìˆœì„œëŒ€ë¡œ ì¹´ë“œë¥¼ ë‚´ëŠ”ë° ê·œì¹™ì´ ìˆë‹¤.\n");
-	printf("\t\t\t\t\t6-1. ì²˜ìŒ ì‹œì‘í•œ í”Œë ˆì´ì–´ê°€ ë‚¸ ì¹´ë“œì˜ ìˆ˜ë§Œí¼ ë‚¼ ìˆ˜ ìˆë‹¤.\n");
-	printf("\t\t\t\t\t6-2. ë°”ë¡œ ì „ í”Œë ˆì´ì–´ê°€ ë‚¸ ì¹´ë“œì— ì í˜€ìˆëŠ” ìˆ˜ë³´ë‹¤ ë‚®ì€ ìˆ˜ì˜ ì¹´ë“œë§Œ ë‚¼ ìˆ˜ ìˆë‹¤.\n\n");
-	printf("\t\t\t\t7. ë§Œì•½ ì¹´ë“œë¥¼ ë‚¼ ìˆ˜ ì—†ê±°ë‚˜ ë‚´ê³  ì‹¶ì§€ ì•Šë‹¤ë©´ íŒ¨ìŠ¤ë¥¼ ì„ ì–¸í•œë‹¤.\n\n");
-	printf("\t\t\t\t8. ìœ„ì˜ ê³¼ì •ì„ ë°˜ë³µí•´ì„œ ì¹´ë“œë¥¼ ë§¨ ì²˜ìŒ ë‹¤ í„¸ì–´ë²„ë¦¬ëŠ” ì‚¬ëŒì´ ìƒˆë¡œìš´ ì™•ì´ ë˜ê³  ê·¸ë‹¤ìŒ ì‚¬ëŒë¶€í„° ê·€ì¡±, í‰ë¯¼, ë…¸ì˜ˆê°€ ëœë‹¤.\n\n");
-	printf("\t\t\t\t9. ìƒˆë¡œìš´ ì™•ì€ ê²Œì„ì„ ê³„ì† ì§„í–‰í•  ê²ƒì¸ì§€ ê²°ì •í•œë‹¤.\n\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\t1. ë©”ì¸ í™”ë©´\t2. ê²Œì„ ì¢…ë£Œ\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tìˆ«ìë¥¼ ì…ë ¥í•˜ì‹œì˜¤ : ");
+	printf("\t\t\t\t\t\t\t\t\t\t\t\t**********°ÔÀÓ ¹æ¹ı**********\n\n");
+	printf("\t\t\t\t1. °è±ŞÀ» Á¤ÇÏ±â À§ÇØ Ä«µå¸¦ ÇÑ Àå¾¿ »Ì´Â´Ù. °¡Àå ÀÛÀº ¼ö¸¦ »ÌÀº »ç¶÷ÀÌ ¿ÕÀÌ µÇ°í ¼ø¼­´ë·Î ±ÍÁ·, Æò¹Î, ³ë¿¹°¡ µÈ´Ù.\n\n");
+	printf("\t\t\t\t2. °è±ŞÀÌ Æí¼ºÀÌ µÇ¾ú´Ù¸é ¿ÕÀº ³ë¿¹¿¡°Ô ½ÃÅ°°í ½ÍÀº °ÍÀ» ½ÃÅ²´Ù.\n\n");
+	printf("\t\t\t\t3. ³ë¿¹°¡ ÀÏÀÌ ³¡³µ´Ù¸é Ä«µå¸¦ ÇÃ·¹ÀÌ¾î ¼ö¸¸Å­ ¶È°°ÀÌ ºĞ¹èÇÑ´Ù.\n");
+	printf("\t\t\t\t\t3-1. ÀÌ¶§, Á¶Ä¿°¡ 2ÀåÀÌ ÀÖ´Ù¸é Çõ¸íÀ» ÀÏÀ¸Å³ ¼ö ÀÖ´Ù.\n");
+	printf("\t\t\t\t\t3-2. ³ë¿¹°¡ Çõ¸íÀ» ÀÏÀ¸Å°¸é °è±ŞÀº ¿ª¼øÀ¸·Î ¹Ù²ï´Ù. \n");
+	printf("\t\t\t\t\t3-3. ´Ù¸¥ ½ÅºĞÀÌ Çõ¸íÀ» ÀÏÀ¸Å°¸é Á¶°øÀ» ¹ÙÄ¡Áö ¾Ê°í °ÔÀÓÀÌ ÁøÇàµÈ´Ù.\n\n");
+	printf("\t\t\t\t4. Ä«µå¸¦ ´Ù ¹Ş¾Ò´Ù¸é ÀÌÁ¦ Á¶°øÀ» ¹ÙÃÄ¾ß ÇÑ´Ù. Á¶°øÀº ´ÙÀ½°ú °°Àº ±ÔÄ¢À¸·Î ¹ÙÃÄ¾ß ÇÑ´Ù.\n");
+	printf("\t\t\t\t\t4-1. ³ë¿¹´Â ¿Õ¿¡°Ô ÀÚ½ÅÀÇ Ä«µå Áß ¼ıÀÚ°¡ °¡Àå ÀÛÀº Ä«µå 2ÀåÀ» °ø¼ÕÇÏ°Ô ¿Õ¿¡°Ô ÁØ´Ù.\n");
+	printf("\t\t\t\t\t4-2. ¿ÕÀº ³ë¿¹¿¡°Ô ÀÚ»êÀÇ Ä«µå Áß °¡Àå ¾µ¸ğ¾øÀ» °Í °°Àº Ä«µå 2ÀåÀ» ÁØ´Ù.\n");
+	printf("\t\t\t\t\t4-3. Æò¹ÎÀº ±ÍÁ·¿¡°Ô ³ë¿¹¿Í °°Àº ¹æ½ÄÀ¸·Î Ä«µå 1Àå, ±ÍÁ·Àº Æò¹Î¿¡°Ô ¿Õ°ú °°Àº ¹æ½ÄÀ¸·Î Ä«µå 1ÀåÀ» ÁØ´Ù.\n\n");
+	printf("\t\t\t\t5. Á¶°øÀ» ´Ù ¹ÙÃÆ´Ù¸é ¿ÕÀÌ ¼±ÀÌ µÇ¾î ½ÃÀÛÇÑ´Ù. ¿øÇÏ´Â Ä«µå¸¦ ¿øÇÏ´Â ¼ö ¸¸Å­ ³¾ ¼ö ÀÖ°í, ÀÌ¶§ ÀüºÎ °°Àº ¼ö°¡ ÀûÈù Ä«µå¿©¾ß ÇÑ´Ù.\n\n");
+	printf("\t\t\t\t6. °è±Ş ¼ø¼­´ë·Î Ä«µå¸¦ ³»´Âµ¥ ±ÔÄ¢ÀÌ ÀÖ´Ù.\n");
+	printf("\t\t\t\t\t6-1. Ã³À½ ½ÃÀÛÇÑ ÇÃ·¹ÀÌ¾î°¡ ³½ Ä«µåÀÇ ¼ö¸¸Å­ ³¾ ¼ö ÀÖ´Ù.\n");
+	printf("\t\t\t\t\t6-2. ¹Ù·Î Àü ÇÃ·¹ÀÌ¾î°¡ ³½ Ä«µå¿¡ ÀûÇôÀÖ´Â ¼öº¸´Ù ³·Àº ¼öÀÇ Ä«µå¸¸ ³¾ ¼ö ÀÖ´Ù.\n\n");
+	printf("\t\t\t\t7. ¸¸¾à Ä«µå¸¦ ³¾ ¼ö ¾ø°Å³ª ³»°í ½ÍÁö ¾Ê´Ù¸é ÆĞ½º¸¦ ¼±¾ğÇÑ´Ù.\n\n");
+	printf("\t\t\t\t8. À§ÀÇ °úÁ¤À» ¹İº¹ÇØ¼­ Ä«µå¸¦ ¸Ç Ã³À½ ´Ù ÅĞ¾î¹ö¸®´Â »ç¶÷ÀÌ »õ·Î¿î ¿ÕÀÌ µÇ°í ±×´ÙÀ½ »ç¶÷ºÎÅÍ ±ÍÁ·, Æò¹Î, ³ë¿¹°¡ µÈ´Ù.\n\n");
+	printf("\t\t\t\t9. »õ·Î¿î ¿ÕÀº °ÔÀÓÀ» °è¼Ó ÁøÇàÇÒ °ÍÀÎÁö °áÁ¤ÇÑ´Ù.\n\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t1. ¸ŞÀÎ È­¸é\t2. °ÔÀÓ Á¾·á\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\t\t¼ıÀÚ¸¦ ÀÔ·ÂÇÏ½Ã¿À : ");
 	scanf_s("%d", &input);
 
 	return input;
 }
 
-void Write_User_Nickname(struct User* User1, struct User* User2, struct User* User3, struct User* User4) {
-	char input[255] = { 0 };
+void Get_Nickname(struct User* user) {
+	char input[30] = { 0 };
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\të‹‰ë„¤ì„ ìµœëŒ€ 30ì(ê³µë°±í¬í•¨)\n\n\n");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t´Ğ³×ÀÓ ÃÖ´ë 30ÀÚ(°ø¹é Æ÷ÇÔ)\n\n\n");
 
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser1ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
-	gets_s(User1->name, 30);
+	printf("\t\t\t\t\t\t\t\t\t\tuser1ÀÇ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇÏ¼¼¿ä : ");
+	gets_s(user[0].name, 30); 
+	gets_s(user[0].name, 30);
 	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser2ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
-	gets_s(User2->name, 30);
-	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser3ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
-	gets_s(User3->name, 30);
-	printf("\n\n");
-	printf("\t\t\t\t\t\t\t\t\t\t\tUser4ì˜ ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
-	gets_s(User4->name, 30);
+
+	for (int i = 1; i < Player; i++)
+	{
+		printf("\t\t\t\t\t\t\t\t\t\tuser%dÀÇ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇÏ¼¼¿ä : ", i + 1);
+		gets_s(user[i].name, 30);
+		printf("\n\n");
+	}
+
+	printf("\n\n\t\t\t\t\t\t\t\t\t\t\tÀÌ ´Ğ³×ÀÓÀÌ ¸Â½À´Ï±î?\n\n");
+	for (int i = 0; i < Player; i++)
+	{
+		printf("\t\t\t\t\t\t\t\t\t\tuser%d : %s\n\n", i + 1, user[i].name);
+	}
 
 
 Check:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t  ë‹‰ë„¤ì„ì„ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
-	gets_s(input, 255);
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\tÀÌ´ë·Î ÁøÇàÇÏ½Ã°Ú½À´Ï±î? (\"¿¹\" È¤Àº \"¾Æ´Ï¿ä\"¶ó°í ÀÔ·ÂÇÏ¼¼¿ä) : ");
+	gets_s(input, 30);
 
-	if (strcmp(input, "ì˜ˆ") == 0) {
+	if (strcmp(input, "¿¹") == 0) {
 		system("cls");
 	}
+	else if (strcmp(input, "¾Æ´Ï¿ä") == 0) {
+		system("cls");
+		Get_Nickname(user);
+	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
+		printf("\t\t\t\t\t\t\t\t\t\t\t´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä.\n");
 		goto Check;
 	}
+
 }
 
 void Decide_Divide_Class() {
 	char input[255] = { 0 };
 
 Divide:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì„ ë‚˜ëˆ„ì‹œê² ìŠµë‹ˆê¹Œ? (\"ë‚˜ëˆˆë‹¤\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) :  ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t°è±ŞÀ» ³ª´©½Ã°Ú½À´Ï±î? (\"³ª´«´Ù\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) :  ");
 	gets_s(input, 255);
 
-	if (strcmp(input, "ë‚˜ëˆˆë‹¤") == 0) {
-		printf("\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì„ ë‚˜ëˆ„ê² ìŠµë‹ˆë‹¤.\n");
+	if (strcmp(input, "³ª´«´Ù") == 0) {
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t°è±ŞÀ» ³ª´©°Ú½À´Ï´Ù.\n");
 	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
+		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
 		goto Divide;
 	}
 
 }
 
-void _Divide_Class(struct User* user1, struct User* user2, struct User* user3, struct User* user4) {
+void Divide_Class(struct User* user) {
 
 divide:
 	srand(time(NULL));
@@ -272,22 +236,22 @@ divide:
 	int b = rand() % 80;
 	int c = rand() % 80;
 	int d = rand() % 80;
-	int max = num[0], min = INT_MAX;
+	int max = num[0], min = 100; //Å« ¼ö¸¦ ±âÁØÀ¸·Î ÇØ ³ö¾ß minÀÌ ±¸ÇØÁü
 	int second = 0, third = 0;
 
-	num[0] = *(ALL_card + a);
-	num[1] = *(ALL_card + b);
-	num[2] = *(ALL_card + c);
-	num[3] = *(ALL_card + d);
+	num[0] = *(cards + a);
+	num[1] = *(cards + b);
+	num[2] = *(cards + c);
+	num[3] = *(cards + d);
 
-	printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%sì´(ê°€) ë½‘ì€ ìˆ˜ : %d\n", user1->name, num[0]);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´(ê°€) ë½‘ì€ ìˆ˜ : %d\n", user2->name, num[1]);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´(ê°€) ë½‘ì€ ìˆ˜ : %d\n", user3->name, num[2]);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì´(ê°€) ë½‘ì€ ìˆ˜ : %d\n", user4->name, num[3]);
+	for (int i = 0; i < Player; i++)
+	{
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÌ(°¡) »ÌÀº ¼ö : %d\n", user[i].name, num[i]);
+	}
 
 	if ((num[0] == num[1]) || (num[0] == num[2]) || (num[0] == num[3]) || (num[1] == num[2]) || (num[1] == num[3]) || (num[2] == num[3]))
 	{
-		printf("\n\n\t\t\t\t\t\t\t\t\t\t\tê°™ì€ ìˆ«ìê°€ ìˆì–´ì„œ ë‹¤ì‹œ ë‚˜ëˆ„ê² ìŠµë‹ˆë‹¤.\n");
+		printf("\t\t\t\t\t\t\t\t\t\t\t°°Àº ¼ıÀÚ°¡ ÀÖ¾î¼­ ´Ù½Ã ³ª´©°Ú½À´Ï´Ù.\n");
 		Sleep(2000);
 		system("cls");
 		goto divide;
@@ -387,635 +351,421 @@ divide:
 	{
 		if (max == num[i])
 		{
-			if (max == num[0])
+			for (int i = 0; i < Player; i++)
 			{
-				strcpy(user1->Class, "ë…¸ì˜ˆ");
-				user1->Class_Num = Slave;
-			}
-			else if (max == num[1])
-			{
-				strcpy(user2->Class, "ë…¸ì˜ˆ");
-				user2->Class_Num = Slave;
-			}
-			else if (max == num[2])
-			{
-				strcpy(user3->Class, "ë…¸ì˜ˆ");
-				user3->Class_Num = Slave;
-			}
-			else if (max == num[3])
-			{
-				strcpy(user4->Class, "ë…¸ì˜ˆ");
-				user4->Class_Num = Slave;
+				if (max == num[i])
+				{
+					strcpy(user[i].Class, "³ë¿¹");
+					user[i].Class_Num = Slave;
+				}
 			}
 		}
 
 		if (second == num[i])
 		{
-			if (second == num[0])
+			for (int i = 0; i < Player; i++)
 			{
-				strcpy(user1->Class, "í‰ë¯¼");
-				user1->Class_Num = Farmer;
-			}
-			else if (second == num[1])
-			{
-				strcpy(user2->Class, "í‰ë¯¼");
-				user2->Class_Num = Farmer;
-			}
-			else if (second == num[2])
-			{
-				strcpy(user3->Class, "í‰ë¯¼");
-				user3->Class_Num = Farmer;
-			}
-			else if (second == num[3])
-			{
-				strcpy(user4->Class, "í‰ë¯¼");
-				user4->Class_Num = Farmer;
+				if (second == num[i])
+				{
+					strcpy(user[i].Class, "Æò¹Î");
+					user[i].Class_Num = Farmer;
+				}
 			}
 		}
 
 		if (third == num[i])
 		{
-			if (third == num[0])
+			for (int i = 0; i < Player; i++)
 			{
-				strcpy(user1->Class, "ê·€ì¡±");
-				user1->Class_Num = Noble;
-			}
-			else if (third == num[1])
-			{
-				strcpy(user2->Class, "ê·€ì¡±");
-				user2->Class_Num = Noble;
-			}
-			else if (third == num[2])
-			{
-				strcpy(user3->Class, "ê·€ì¡±");
-				user3->Class_Num = Noble;
-			}
-			else if (third == num[3])
-			{
-				strcpy(user4->Class, "ê·€ì¡±");
-				user4->Class_Num = Noble;
+				if (third == num[i])
+				{
+					strcpy(user[i].Class, "±ÍÁ·");
+					user[i].Class_Num = Noble;
+				}
 			}
 		}
 
 		if (min == num[i])
 		{
-			if (min == num[0])
+			for (int i = 0; i < Player; i++)
 			{
-				strcpy(user1->Class, "ì™•");
-				user1->Class_Num = King;
-			}
-			else if (min == num[1])
-			{
-				strcpy(user2->Class, "ì™•");
-				user2->Class_Num = King;
-			}
-			else if (min == num[2])
-			{
-				strcpy(user3->Class, "ì™•");
-				user3->Class_Num = King;
-			}
-			else if (min == num[3])
-			{
-				strcpy(user4->Class, "ì™•");
-				user4->Class_Num = King;
+				if (min == num[i])
+				{
+					strcpy(user[i].Class, "¿Õ");
+					user[i].Class_Num = King;
+				}
 			}
 		}
 	}
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì€ ë‹¤ìŒê³¼ ê°™ì´ ì •í•´ì¡ŒìŠµë‹ˆë‹¤.\n");
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ : %s\n", user1->name, user1->Class);
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ : %s\n", user2->name, user2->Class);
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ : %s\n", user3->name, user3->Class);
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ê³„ê¸‰ : %s\n", user4->name, user4->Class);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t°è±ŞÀº ´ÙÀ½°ú °°ÀÌ Á¤ÇØÁ³½À´Ï´Ù.\n");
+	for (int i = 0; i < Player; i++)
+	{
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ °è±Ş : %s\n", user[i].name, user[i].Class);
+	}
 
 	char buf[255] = { 0 };
 
 OKAY:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì„ í™•ì¸í•˜ì…¨ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t°è±ŞÀ» È®ÀÎÇÏ¼Ì½À´Ï±î? (\"¿¹\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
 	gets_s(buf, 255);
 
-	if (strcmp(buf, "ì˜ˆ") == 0) system("cls");
+	if (strcmp(buf, "¿¹") == 0) system("cls");
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
+		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
 		goto OKAY;
 	}
-
 }
 
-void King_Order_To_Slave() {
+void King_Order_To_Slave() { 
 	char Order[255] = { 0 };
 	char input[255] = { 0 };
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ë…¸ì˜ˆì—ê²Œ ì–´ë–¤ ëª…ë ¹ì„ ë‚´ë¦¬ê² ìŠµë‹ˆê¹Œ? : ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ³ë¿¹¿¡°Ô ¾î¶² ¸í·ÉÀ» ³»¸®°Ú½À´Ï±î? : ");
 	gets_s(Order, 255);
 
 	system("cls");
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t   ì „ë‹¬ì¤‘");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t   Àü´ŞÁß");
 	Sleep(3000);
 	system("cls");
 
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ì™•ì˜ ëª…ë ¹ : ");
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t    ¿ÕÀÇ ¸í·É : ");
 	puts(Order);
 
 Order:
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t    ì™•ì˜ ëª…ë ¹ì„ ë”°ë¥´ì…¨ìŠµë‹ˆê¹Œ? (\"ë”°ëìŠµë‹ˆë‹¤.\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t    ¿ÕÀÇ ¸í·ÉÀ» µû¸£¼Ì½À´Ï±î? (\"µû¶ú´Ù\"¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
 	gets_s(input, 255);
 
-	if (strcmp(input, "ë”°ëìŠµë‹ˆë‹¤.") == 0) {
+	if (strcmp(input, "µû¶ú´Ù") == 0) {
 		system("cls");
 	}
 	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
+		printf("\t\t\t\t\t\t\t\t\t\t\tÀß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
 		goto Order;
 	}
 }
 
-void share_card(char* src_deck[], char* des_deck[])
+void share_card(int* src_deck[], int* des_deck[])
 {
-	for (int i = 0; i < 20; i++) //í•œ ë±ì— 20ì¥
+	for (int i = 0; i < 20; i++) //ÇÑ µ¦¿¡ 20Àå
 	{
 		while (1)
 		{
 
-			int random_value = rand() % 80; //ëœë¤ìœ¼ë¡œ 0~79 ìƒì„±
+			int random_value = rand() % 80; //·£´ıÀ¸·Î 0~79 »ı¼º
 
-			des_deck[i] = *(src_deck + random_value); //í¬ì¸í„° ì‚°ìˆ ì—°ì‚°ì„ ì´ìš©í•˜ì—¬ ëœë¤ ìƒì„±ëœ ì¸ë±ìŠ¤ì˜ ì¹´ë“œë¥¼ ë‚˜ëˆ ì¤Œ
+			des_deck[i] = *(src_deck + random_value); //Æ÷ÀÎÅÍ »ê¼ú¿¬»êÀ» ÀÌ¿ëÇÏ¿© ·£´ı »ı¼ºµÈ ÀÎµ¦½ºÀÇ Ä«µå¸¦ ³ª´²ÁÜ
 
-			if (src_deck[random_value] != '-1') //ì´ë¯¸ ë½‘ì€ ì¹´ë“œëŠ” ì œì™¸í•˜ë„ë¡ í•¨
+			if (src_deck[random_value] != '-1') //ÀÌ¹Ì »ÌÀº Ä«µå´Â Á¦¿ÜÇÏµµ·Ï ÇÔ
 			{
-				src_deck[random_value] = '-1'; //ë½‘ì€ ì¹´ë“œëŠ” -1ìœ¼ë¡œ ë°”ê¿”ì¤Œ
+				src_deck[random_value] = '-1'; //»ÌÀº Ä«µå´Â -1À¸·Î ¹Ù²ãÁÜ
 				break;
 			}
 		}
 	}
 }
 
-void distribute_card(struct User* user1, struct User* user2, struct User* user3, struct User* user4)
+int distribute_card(struct User* user)
 {
 	srand(time(NULL));
 
-	printf("\t\t\t\t\t\t\t\t\t\tì¹´ë“œ ë°°ë¶„ ê²°ê³¼ëŠ” ë‹¤ìŒê³¼ ê°™ìŠµë‹ˆë‹¤.\n\n");
+	printf("\t\t\t\t\t\t\t\t\t\tÄ«µå ¹èºĞ °á°ú´Â ´ÙÀ½°ú °°½À´Ï´Ù.\n\n");
 
-	printf("\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ : ", user1->name);
-	share_card(cards, p1); //ì¹´ë“œ ë½‘ê¸°
-	for (int i = 0; i < 20; i++) //ì¹´ë“œ ì¶œë ¥
+	for (int i = 0; i < Player; i++)
 	{
-		printf("%d ", p1[i]);
-	}
-	printf("\n");
-
-	printf("\n\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ : ", user2->name);
-	share_card(cards, p2);
-	for (int i = 0; i < 20; i++)
-	{
-		printf("%d ", p2[i]);
-	}
-	printf("\n");
-
-	printf("\n\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ : ", user3->name);
-	share_card(cards, p3);
-	for (int i = 0; i < 20; i++)
-	{
-		printf("%d ", p3[i]);
-	}
-	printf("\n");
-
-	printf("\n\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ : ", user4->name);
-	share_card(cards, p4);
-	for (int i = 0; i < 20; i++)
-	{
-		printf("%d ", p4[i]);
-	}
-	printf("\n");
-
-	Sleep(3000);
-	system("cls");
-
-	printf("\n\t\t\t\t\t\t\t\t\t\tì´ì œ í•œ ëª…ì”© ìì‹ ì˜ ì¹´ë“œë¥¼ í™•ì¸í•˜ì„¸ìš”.\n");
-	Sleep(3000);
-	system("cls");
-}
-
-void print_card(struct User* user1, struct User* user2, struct User* user3, struct User* user4)
-{
-	char input[255] = { 0 };
-	for (int i = 0; i < 13; i++)
-	{
-		user1->deck[i] = 0;
-		user2->deck[i] = 0;
-		user3->deck[i] = 0;
-		user4->deck[i] = 0;
-	}
-	for (int i = 0; i < 20; i++)
-	{
-		if (p1[i] == 0)
-			user1->deck[0]++;
-		else if (p1[i] == 1)
-			user1->deck[1]++;
-		else if (p1[i] == 2)
-			user1->deck[2]++;
-		else if (p1[i] == 3)
-			user1->deck[3]++;
-		else if (p1[i] == 4)
-			user1->deck[4]++;
-		else if (p1[i] == 5)
-			user1->deck[5]++;
-		else if (p1[i] == 6)
-			user1->deck[6]++;
-		else if (p1[i] == 7)
-			user1->deck[7]++;
-		else if (p1[i] == 8)
-			user1->deck[8]++;
-		else if (p1[i] == 9)
-			user1->deck[9]++;
-		else if (p1[i] == 10)
-			user1->deck[10]++;
-		else if (p1[i] == 11)
-			user1->deck[11]++;
-		else if (p1[i] == 12)
-			user1->deck[12]++;
-	}
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%sì˜ ì¹´ë“œ íŒ¨>\n", user1->name);
-	for (int i = 0; i < 13; i++)
-	{
-		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %dì¥\n", i, class[i], user1->deck[i]);
-	}
-CHECK1:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\tì¹´ë“œ íŒ¨ë¥¼ í™•ì¸í•˜ì…¨ìŠµë‹ˆê¹Œ? (\"í™•ì¸\"ì´ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
-	gets_s(input, 255);
-	if (strcmp(input, "í™•ì¸") == 0) {
-		system("cls");
-	}
-	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\të‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.\n");
-		goto CHECK1;
-	}
-
-
-	for (int i = 0; i < 20; i++)
-	{
-		if (p2[i] == 0)
-			user2->deck[0]++;
-		else if (p2[i] == 1)
-			user2->deck[1]++;
-		else if (p2[i] == 2)
-			user2->deck[2]++;
-		else if (p2[i] == 3)
-			user2->deck[3]++;
-		else if (p2[i] == 4)
-			user2->deck[4]++;
-		else if (p2[i] == 5)
-			user2->deck[5]++;
-		else if (p2[i] == 6)
-			user2->deck[6]++;
-		else if (p2[i] == 7)
-			user2->deck[7]++;
-		else if (p2[i] == 8)
-			user2->deck[8]++;
-		else if (p2[i] == 9)
-			user2->deck[9]++;
-		else if (p2[i] == 10)
-			user2->deck[10]++;
-		else if (p2[i] == 11)
-			user2->deck[11]++;
-		else if (p2[i] == 12)
-			user2->deck[12]++;
-	}
-
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%sì˜ ì¹´ë“œ íŒ¨>\n", user2->name);
-	for (int i = 0; i < 13; i++)
-	{
-		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %dì¥\n", i, class[i], user2->deck[i]);
-	}
-CHECK2:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\tì¹´ë“œ íŒ¨ë¥¼ í™•ì¸í•˜ì…¨ìŠµë‹ˆê¹Œ? (\"í™•ì¸\"ì´ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
-	gets_s(input, 255);
-	if (strcmp(input, "í™•ì¸") == 0) {
-		system("cls");
-	}
-	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\të‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.\n");
-		goto CHECK2;
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		if (p3[i] == 0)
-			user3->deck[0]++;
-		else if (p3[i] == 1)
-			user3->deck[1]++;
-		else if (p3[i] == 2)
-			user3->deck[2]++;
-		else if (p3[i] == 3)
-			user3->deck[3]++;
-		else if (p3[i] == 4)
-			user3->deck[4]++;
-		else if (p3[i] == 5)
-			user3->deck[5]++;
-		else if (p3[i] == 6)
-			user3->deck[6]++;
-		else if (p3[i] == 7)
-			user3->deck[7]++;
-		else if (p3[i] == 8)
-			user3->deck[8]++;
-		else if (p3[i] == 9)
-			user3->deck[9]++;
-		else if (p3[i] == 10)
-			user3->deck[10]++;
-		else if (p3[i] == 11)
-			user3->deck[11]++;
-		else if (p3[i] == 12)
-			user3->deck[12]++;
-	}
-
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%sì˜ ì¹´ë“œ íŒ¨>\n", user3->name);
-	for (int i = 0; i < 13; i++)
-	{
-		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %dì¥\n", i, class[i], user3->deck[i]);
-	}
-CHECK3:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\tì¹´ë“œ íŒ¨ë¥¼ í™•ì¸í•˜ì…¨ìŠµë‹ˆê¹Œ? (\"í™•ì¸\"ì´ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
-	gets_s(input, 255);
-	if (strcmp(input, "í™•ì¸") == 0) {
-		system("cls");
-	}
-	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\të‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.\n");
-		goto CHECK3;
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		if (p4[i] == 0)
-			user4->deck[0]++;
-		else if (p4[i] == 1)
-			user4->deck[1]++;
-		else if (p4[i] == 2)
-			user4->deck[2]++;
-		else if (p4[i] == 3)
-			user4->deck[3]++;
-		else if (p4[i] == 4)
-			user4->deck[4]++;
-		else if (p4[i] == 5)
-			user4->deck[5]++;
-		else if (p4[i] == 6)
-			user4->deck[6]++;
-		else if (p4[i] == 7)
-			user4->deck[7]++;
-		else if (p4[i] == 8)
-			user4->deck[8]++;
-		else if (p4[i] == 9)
-			user4->deck[9]++;
-		else if (p4[i] == 10)
-			user4->deck[10]++;
-		else if (p4[i] == 11)
-			user4->deck[11]++;
-		else if (p4[i] == 12)
-			user4->deck[12]++;
-	}
-
-
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t<%sì˜ ì¹´ë“œ íŒ¨>\n", user4->name);
-	for (int i = 0; i < 13; i++)
-	{
-		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %dì¥\n", i, class[i], user4->deck[i]);
-	}
-
-CHECK4:
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\tì¹´ë“œ íŒ¨ë¥¼ í™•ì¸í•˜ì…¨ìŠµë‹ˆê¹Œ? (\"í™•ì¸\"ì´ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
-	gets_s(input, 255);
-	if (strcmp(input, "í™•ì¸") == 0) {
-		system("cls");
-	}
-	else {
-		printf("\t\t\t\t\t\t\t\t\t\t\të‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.\n");
-		goto CHECK4;
-	}
-
-}
-
-void Print_Card(struct User* User) {
-
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%sì˜ ì¹´ë“œ íŒ¨\n", User->name);
-	for (int i = 0; i < 13; i++) {
-		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %d\n", i, class[i], User->deck[i]);
-	}
-
-}
-
-int Revolution(struct User* User) {
-
-	char buf[255] = { 0 };
-
-	if (strcmp(User->Class, "ë…¸ì˜ˆ") == 0) {
-		if (User->deck[0] == 2) {
-			DECIDE:
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%s í”Œë ˆì´ì–´ : í˜ëª…ì„ ì¼ìœ¼í‚¤ê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€\"ì•„ë‹ˆìš”\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤): ", User->name);
-			gets_s(buf, 255);
-
-			if (strcmp(buf, "ì˜ˆ") == 0) {
-				User->deck[0] -= 2;
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tí˜ëª…ì´ ì¼ì–´ë‚¬ìŠµë‹ˆë‹¤!");
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tê³„ê¸‰ì´ ë’¤ë°”ë€Œê³  ì¡°ê³µì„ ì•ˆë‚´ë„ ë©ë‹ˆë‹¤!\n");
-				Sleep(3000);
-				system("cls");
-				return 1;
-			}
-			else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) {
-				system("cls");
-			}
-			else {
-				printf("\t\t\t\t\t\t\t\t\t\t\tì˜ëª»ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.");
-				goto DECIDE;
-			}
+		printf("\t\t\t\t\t\t\t\t\t%sÀÇ Ä«µå : ", user[i].name);
+		share_card(cards, p[i]); //Ä«µå »Ì±â
+		for (int j = 0; j < 20; j++) //Ä«µå Ãâ·Â
+		{
+			printf("%d ", p[i][j]);
 		}
+		printf("\n");
 	}
+
+	Sleep(3000);
+	system("cls");
+
+	printf("\n\t\t\t\t\t\t\t\t\t\tÀÌÁ¦ ÇÑ ¸í¾¿ ÀÚ½ÅÀÇ Ä«µå¸¦ È®ÀÎÇÏ¼¼¿ä.\n");
 
 	return 0;
 }
 
-void Revolution_Class_Change(struct User* User) {
+void print_card(struct User* user)
+{	
 
-	if (strcmp(User->name, "ì™•") == 0) strcpy(User->Class, "ë…¸ì˜ˆ");
-	else if (strcmp(User->name, "ê·€ì¡±") == 0) strcpy(User->Class, "í‰ë¯¼");
-	else if (strcmp(User->name, "í‰ë¯¼") == 0) strcpy(User->Class, "ê·€ì¡±");
-	else if (strcmp(User->name, "ë…¸ì˜ˆ") == 0) strcpy(User->Class, "ì™•");
+	char input[255] = { 0 };
+	for (int i = 0; i < 13; i++)
+	{
+		user[0].deck[i] = 0;
+		user[1].deck[i] = 0;
+		user[2].deck[i] = 0;
+		user[3].deck[i] = 0;
+	}
+	for (int i = 0; i < Player; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			if (p[i][j] == 0)
+				user[i].deck[0]++;
+			else if (p[i][j] == 1)
+				user[i].deck[1]++;
+			else if (p[i][j] == 2)
+				user[i].deck[2]++;
+			else if (p[i][j] == 3)
+				user[i].deck[3]++;
+			else if (p[i][j] == 4)
+				user[i].deck[4]++;
+			else if (p[i][j] == 5)
+				user[i].deck[5]++;
+			else if (p[i][j] == 6)
+				user[i].deck[6]++;
+			else if (p[i][j] == 7)
+				user[i].deck[7]++;
+			else if (p[i][j] == 8)
+				user[i].deck[8]++;
+			else if (p[i][j] == 9)
+				user[i].deck[9]++;
+			else if (p[i][j] == 10)
+				user[i].deck[10]++;
+			else if (p[i][j] == 11)
+				user[i].deck[11]++;
+			else if (p[i][j] == 12)
+				user[i].deck[12]++;
+		}
+
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t<%sÀÇ Ä«µå ÆĞ>\n", user[i].name);
+		for (int k = 0; k < 13; k++)
+		{
+			if (k == 0)
+			{
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tÁ¶Ä¿ : %dÀå\n", user[i].deck[0]);
+			}
+			else
+			{
+				printf("\n\t\t\t\t\t\t\t\t\t\t\t%d¹ø Ä«µå : %dÀå\n", k, user[i].deck[k]);
+			}
+
+		}
+
+	CHECK:
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t\tÄ«µå ÆĞ¸¦ È®ÀÎÇÏ¼Ì½À´Ï±î? (\"È®ÀÎ\"ÀÌ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
+		gets_s(input, 255);
+		if (strcmp(input, "È®ÀÎ") == 0) {
+			system("cls");
+		}
+		else {
+			printf("\t\t\t\t\t\t\t\t\t\t\t´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä.\n");
+			goto CHECK;
+		}
+	}
 
 }
 
-void Pay_A_Tribute(struct User* User) {
+int Revolution(struct User* user) {
 
-	int count = 0;
+	int n = 0;
+	for (int i = 0; i < Player; i++) {
+		if (user[i].Class_Num == Slave) {
+			if (user[i].deck[0] == 2) {
+				printf("Çõ¸íÀ» ÀÏÀ¸Å³ ¼ö ÀÖ½À´Ï´Ù. Çõ¸íÀ» ÀÏÀ¸Å°°Ú½À´Ï±î?(1. ¿¹, 2. ¾Æ´Ï¿ä): ");
+				scanf_s("%d", &n);
 
-	if (strcmp(User->Class, "ì™•") == 0) {
-		KING:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\të…¸ì˜ˆì—ê²Œ ì–´ë–¤ ì¹´ë“œë¥¼ ì£¼ê² ìŠµë‹ˆê¹Œ? : ");
-		scanf_s("%d", &Card_Class_King);
+				if (n == 2)
+					return -1;
 
-		if (User->deck[Card_Class_King] == 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
-			goto KING;
-		}
-
-		if (User->deck[Card_Class_King] == 1) {
-			User->deck[Card_Class_King] -= 1;
-		KING_:
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\të…¸ì˜ˆì—ê²Œ ì–´ë–¤ ì¹´ë“œë¥¼ ì£¼ê² ìŠµë‹ˆê¹Œ? : ");
-			scanf_s("%d", &Card_Class_King_);
-
-			if (User->deck[Card_Class_King_] == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
-				goto KING_;
-			}
-			else User->deck[Card_Class_King_] -= 1;
-		}
-
-		else User->deck[Card_Class_King] -= Give_To_Slave;
-	}
-	else if (strcmp(User->Class, "ê·€ì¡±") == 0) {
-		NOBLE:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tí‰ë¯¼ì—ê²Œ ì–´ë–¤ ì¹´ë“œë¥¼ ì£¼ê² ìŠµë‹ˆê¹Œ? : ");
-		scanf_s("%d", &Card_Class_Noble);
-
-		if (User->deck[Card_Class_Noble] == 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
-			goto NOBLE;
-		}
-
-		User->deck[Card_Class_Noble] -= Give_To_Farmer;
-	}
-	else if (strcmp(User->Class, "í‰ë¯¼") == 0) {
-		FARMER:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tê·€ì¡±ê»˜ ì–´ë–¤ ì¹´ë“œë¥¼ ì£¼ê² ìŠµë‹ˆê¹Œ? : ");
-		scanf_s("%d", &Card_Class_Farmer);
-
-		if (User->deck[Card_Class_Farmer] == 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
-			goto FARMER;
-		}
-		for (int i = Card_Class_Farmer - 1; i > 0; i--) {
-			if (User->deck[i] > 0) {
-				count += 1;
-			}
-		}
-		if (count > 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œë³´ë‹¤ ì‘ì€ ê³„ê¸‰ì´ ì¡´ì¬í•©ë‹ˆë‹¤.\n");
-			count = 0;
-			goto FARMER;
-		}
-
-		User->deck[Card_Class_Farmer] -= Give_To_Noble;
-	}
-	else if (strcmp(User->Class, "ë…¸ì˜ˆ") == 0) {
-		SLAVE:
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì™•ê»˜ ì–´ë–¤ ì¹´ë“œë¥¼ ì£¼ê² ìŠµë‹ˆê¹Œ? : ");
-		scanf_s("%d", &Card_Class_Slave);
-
-		if (User->deck[Card_Class_Slave] == 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
-			goto SLAVE;
-		}
-		for (int i = Card_Class_Slave - 1; i > 0; i--) {
-			if (User->deck[i] > 0) {
-				count += 1;
-			}
-		}
-		if (count > 0) {
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œë³´ë‹¤ ì‘ì€ ê³„ê¸‰ì´ ì¡´ì¬í•©ë‹ˆë‹¤.\n");
-			count = 0;
-			goto SLAVE;
-		}
-
-		if (User->deck[Card_Class_Slave] == 1) {
-			User->deck[Card_Class_Slave] -= 1;
-		SLAVE_:
-			printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì™•ê»˜ ì–´ë–¤ ì¹´ë“œë¥¼ ì£¼ê² ìŠµë‹ˆê¹Œ? : ");
-			scanf_s("%d", &Card_Class_Slave_);
-
-			if (User->deck[Card_Class_Slave_] == 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
-				goto SLAVE_;
-			}
-			for (int i = Card_Class_Slave_ - 1; i > 0; i--) {
-				if (User->deck[i] > 0) {
-					count += 1;
+				printf("°è±ŞÀÌ µÚ¹Ù²î¾ú½À´Ï´Ù!!\n\n");
+				for (int j = 0; j < Player; j++) {
+					if (user[j].Class_Num == King) {
+						strcpy(user[j].Class, "³ë¿¹");
+						user[j].Class_Num = Slave;
+					}
+					else if (user[j].Class_Num == Noble) {
+						strcpy(user[j].Class, "Æò¹Î");
+						user[j].Class_Num = Farmer;
+					}
+					else if (user[j].Class_Num == Farmer) {
+						strcpy(user[j].Class, "±ÍÁ·");
+						user[j].Class_Num = Noble;
+					}	
+					else {
+						strcpy(user[j].Class, "¿Õ");
+						user[j].Class_Num = King;
+					}
 				}
+				printf("°è±Ş\n\n");
+				for (int i = 0; i < Player; i++)
+				{
+					printf("%sÀÇ °è±Ş : %s\n", user[i].name, user[i].Class);
+				}
+				user[i].deck[0] = 0;
+				return 0;
 			}
-			if (count > 0) {
-				printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œë³´ë‹¤ ì‘ì€ ê³„ê¸‰ì´ ì¡´ì¬í•©ë‹ˆë‹¤.\n");
-				count = 0;
-				goto SLAVE_;
-			}
-
-			else User->deck[Card_Class_Slave_] -= 1;
 		}
-
-		else User->deck[Card_Class_Slave] -= Give_To_King;
 	}
-
+	return -1;
 }
 
-void Get_A_Tribute(struct User* User) {
+void Pay_A_Tribute(struct User* user) 
+{	
+	int a = 0, b = 0;
+	int A = 0, B = 0;
+	int i = 0, j = 0;
 
-	if (strcmp(User->Class, "ì™•") == 0) {
-		if (Card_Class_Slave_ > 0) {
-			User->deck[Card_Class_Slave] += 1;
-			User->deck[Card_Class_Slave_] += 1;
+	printf("¿Õ________³ë¿¹\n\n");
+	for (i; i < Player; i++) {
+		if (user[i].Class_Num == Slave) {//ÇöÀç ³ó³ëÀÇ Ä«µå Á¤º¸¸¦ º¸¿©ÁÜ
+			printf("%sÀÇ Ä«µå\n\n", user[i].name);
+			for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+				printf("%d. %s : %dÀå\n", k, class[k], user[i].deck[k]);
+			printf("\n");
+		AERO:
+			printf("ÀÚ½ÅÀÇ Ä«µå Áß ¼ıÀÚ°¡ °¡Àå ³·Àº Ä«µå 2ÀåÀ» ¿Õ¿¡°Ô ÁÖ¼¼¿ä.(Ä«µå ¹øÈ£¸¦ ÀûÀ¸½Ã¿À, Á¶Ä¿´Â ¿¹¿Ü)\n");
+			scanf_s("%d %d", &a, &b);
+
+			if (((user + i)->deck[a]) == 0)
+				goto AERO;
+			if (((user + i)->deck[b]) == 0)
+				goto AERO;
+			if (a > 12 || a < 1)
+				goto AERO;
+			if (b > 12 || b < 1)
+				goto AERO;
+			break;
 		}
-		else User->deck[Card_Class_Slave] += Give_To_King;
+	}
+	for (j; j < Player; j++) {
+		if (user[j].Class_Num == King) {//ÇöÀç ¿ÕÀÇ Ä«µå Á¤º¸¸¦ º¸¿©ÁÜ
+			printf("\n%sÀÇ Ä«µå\n\n", user[j].name);
+			for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+				printf("%d. %s : %dÀå\n", k, class[k], user[j].deck[k]);
+			printf("\n");
+		BERO:
+			printf("ÀÚ½ÅÀÇ Ä«µå Áß ¾µ¸ğ ¾ø´Â Ä«µå 2ÀåÀ» ³ë¿¹¿¡°Ô ÁÖ¼¼¿ä.(Ä«µå ¹øÈ£¸¦ ÀûÀ¸½Ã¿À, Á¶Ä¿´Â ¿¹¿Ü)\n");
+			scanf_s("%d %d", &A, &B);
+
+			if (((user + j)->deck[A]) == 0)
+				goto BERO;
+			if (((user + j)->deck[B]) == 0)
+				goto BERO;
+			if (A > 12 || A < 1)
+				goto BERO;
+			if (B > 12 || B < 1)
+				goto BERO;
+			break;
+		}
 	}
 
-	else if (strcmp(User->Class, "ê·€ì¡±") == 0) User->deck[Card_Class_Farmer] += Give_To_Noble;
-	else if (strcmp(User->Class, "í‰ë¯¼") == 0) User->deck[Card_Class_Noble] += Give_To_Farmer;
+	((user + i)->deck[a])--; ((user + i)->deck[b])--; ((user + i)->deck[A])++; ((user + i)->deck[B])++;
+	((user + j)->deck[A])--; ((user + j)->deck[B])--; ((user + j)->deck[a])++; ((user + j)->deck[b])++;
 
-	else if (strcmp(User->Class, "ë…¸ì˜ˆ") == 0) {
-		if (Card_Class_King_ > 0) {
-			User->deck[Card_Class_King] += 1;
-			User->deck[Card_Class_King_] += 1;
+	printf("\nÁ¶°ø ¹ŞÀº Ä«µå¸¦ È®ÀÎÇÏ¼¼¿ä.\n\n");
+
+	printf("%sÀÇ Ä«µå\n\n", user[i].name);
+	for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+		printf("%d. %s : %dÀå\n", k, class[k], user[i].deck[k]);
+	printf("\n");
+
+	printf("%sÀÇ Ä«µå\n\n", user[j].name);
+	for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+		printf("%d. %s : %dÀå\n", k, class[k], user[j].deck[k]);
+	printf("\n");
+
+	int c = 0, D = 0;
+	int w = 0, e = 0;
+	printf("±ÍÁ·________Æò¹Î\n\n");
+
+	for (w; w < Player; w++) {
+		if (user[w].Class_Num == Farmer) {//ÇöÀç Æò¹ÎÀÇ Ä«µå Á¤º¸¸¦ º¸¿©ÁÜ
+			printf("%sÀÇ Ä«µå\n\n", user[w].name);
+			for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+				printf("%d. %s : %dÀå\n", k, class[k], user[w].deck[k]);
+			printf("\n");
+		CERO:
+			printf("ÀÚ½ÅÀÇ Ä«µå Áß ¼ıÀÚ°¡ °¡Àå ³·Àº Ä«µå 1ÀåÀ» ±ÍÁ·¿¡°Ô ÁÖ¼¼¿ä.(Ä«µå ¹øÈ£¸¦ ÀûÀ¸½Ã¿À, Á¶Ä¿´Â ¿¹¿Ü)\n");
+			scanf_s("%d", &c);
+			if (((user + w)->deck[c]) == 0)
+				goto CERO;
+			if (c > 12 || c < 1)
+				goto CERO;
+			break;
 		}
-		else User->deck[Card_Class_King] += Give_To_Slave;
 	}
 
+	for (e; e < Player; e++) {
+		if (user[e].Class_Num == Noble) {//ÇöÀç ±ÍÁ·ÀÇ Ä«µå Á¤º¸¸¦ º¸¿©ÁÜ
+			printf("%sÀÇ Ä«µå\n\n", user[e].name);
+			for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+				printf("%d. %s : %dÀå\n", k, class[k], user[e].deck[k]);
+			printf("\n");
+		DERO:
+			printf("ÀÚ½ÅÀÇ Ä«µå Áß ¾µ¸ğ ¾ø´Â Ä«µå 1ÀåÀ» Æò¹Î¿¡°Ô ÁÖ¼¼¿ä.(Ä«µå ¹øÈ£¸¦ ÀûÀ¸½Ã¿À, Á¶Ä¿´Â ¿¹¿Ü)\n");
+			scanf_s("%d", &D);
+
+			if (((user + e)->deck[D]) == 0)
+				goto DERO;
+			if (D > 12 || D < 1)
+				goto DERO;
+			break;
+		}
+	}
+	((user + w)->deck[c])--; ((user + w)->deck[D])++; ((user + e)->deck[D])--; ((user + e)->deck[c])++;
+
+	printf("Á¶°ø ¹ŞÀº Ä«µå¸¦ È®ÀÎÇÏ¼¼¿ä.\n\n");
+
+	printf("%sÀÇ Ä«µå\n\n", user[w].name);
+	for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+		printf("%d. %s : %dÀå\n", k + 1, class[k], user[w].deck[k]);
+	printf("\n");
+
+	printf("%sÀÇ Ä«µå\n\n", user[e].name);
+	for (int k = 0; k < 13; k++)//ºĞ¹èµÈ Ä«µå Ãâ·Â, ex) 1.´Ş¹«Æ¼ : 1Àå
+		printf("%d. %s : %dÀå\n", k + 1, class[k], user[e].deck[k]);
+	printf("\n");
+
+	Sleep(3000);
+	system("cls");
 }
 
-void Play_A_Card(struct User* User) {
-	
+int Play_A_Card(struct User* user) {
+
+	if (user->Rank > 0) return 0;
+	system("cls");
+
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ Ä«µå ÆĞ\n", user->name);
+	for (int i = 0; i < 13; i++) {
+		printf("\n\n\t\t\t\t\t\t\t\t\t\t\t%d. %s : %d\n", i, class[i], user->deck[i]);
+	}
+
 	int Card_Kind = 0, Card_How = 0, Joker = 0;
 	char buf[255] = { 0 }, buf_[255] = { 0 };
 
-	printf("\n\t\t\t\t\t\t\t\t\t\t\tì„ ì–¸ëœ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ê°œìˆ˜: %d %d\n", Declare_Card_Class, Pay_Card_Num);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\tì´ì „ í”Œë ˆì´ì–´ê°€ ë‚¸ ì¹´ë“œì˜ ê³„ê¸‰ : %d\n", preCard_Class);
-	printf("\n\t\t\t\t\t\t\t\t\t\t\t(ì„ ì–¸ëœ ì¹´ë“œì˜ ê³„ê¸‰ê³¼ ì´ì „ í”Œë ˆì´ì–´ê°€ ë‚¸ ì¹´ë“œì˜ ê³„ê¸‰ì´ 13ì¼ ê²½ìš° ë‹¹ì‹ ì´ ë‚¸ ì¹´ë“œê°€ ê¸°ì¤€ì´ ë©ë‹ˆë‹¤.)");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t¼±¾ğµÈ Ä«µåÀÇ °è±Ş°ú °³¼ö: %d %d\n", Declare_Card_Class, Pay_Card_Num);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\tÀÌÀü ÇÃ·¹ÀÌ¾î°¡ ³½ Ä«µåÀÇ °è±Ş : %d\n", preCard_Class);
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t(¼±¾ğµÈ Ä«µåÀÇ °è±Ş°ú ÀÌÀü ÇÃ·¹ÀÌ¾î°¡ ³½ Ä«µåÀÇ °è±ŞÀÌ 13ÀÏ °æ¿ì ´ç½ÅÀÌ ³½ Ä«µå°¡ ±âÁØÀÌ µË´Ï´Ù.)");
 DECIDE:
-	printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? (\"ë‚¸ë‹¤\" í˜¹ì€ \"íŒ¨ìŠ¤\" ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ ³»½Ã°Ú½À´Ï±î? (Á¶Ä¿¸¦ Á¦¿ÜÇÑ 12¹ø ±îÁöÀÇ Ä«µå¸¦ ³¾ ¼ö ÀÖ½À´Ï´Ù. \"³½´Ù\" È¤Àº \"ÆĞ½º\" ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
 	gets_s(buf, 255);
 
-	if (strcmp(buf, "íŒ¨ìŠ¤") == 0) {
+	if (strcmp(buf, "ÆĞ½º") == 0) {
 		count++;
 		system("cls");
 	}
 
-	else if (strcmp(buf, "ë‚¸ë‹¤") == 0) {
+	else if (strcmp(buf, "³½´Ù") == 0) {
 	PAY:
-		printf("\n\t\t\t\t\t\t\t\t\t\t\tì–´ë–¤ ì¹´ë“œë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t¾î¶² Ä«µå¸¦ ³»½Ã°Ú½À´Ï±î? : ");
 		scanf_s("%d", &Card_Kind);
 
-		if (Card_Kind >= 13) {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n");
+		if (Card_Kind > 12) {
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n");
 			goto PAY;
 		}
-		else if (User->deck[Card_Kind] == 0) {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œëŠ” ê°€ì§€ê³  ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
+		else if (user->deck[Card_Kind] == 0) {
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tÀÔ·ÂÇÏ½Å Ä«µå´Â °¡Áö°í ÀÖÁö ¾Ê½À´Ï´Ù.\n");
 			goto PAY;
 		}
-		else if (Declare_Card_Class <= Card_Kind && preCard_Class <= Card_Kind) {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tì…ë ¥í•˜ì‹  ì¹´ë“œëŠ” ë‚¼ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n");
+		else if (Declare_Card_Class <= Card_Kind || preCard_Class <= Card_Kind) {
+			printf("\n\t\t\t\t\t\t\t\t\t\t\tÀÔ·ÂÇÏ½Å Ä«µå´Â ³¾ ¼ö ¾ø½À´Ï´Ù.\n");
 			goto PAY;
 		}
 
@@ -1025,131 +775,125 @@ DECIDE:
 		}
 		else preCard_Class = Card_Kind;
 
-		if (User->deck[0] > 0) {
+		if (user->deck[0] > 0) {
 		JOKER:
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tì–´ë¦¿ ê´‘ëŒ€ë¥¼ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€ \"ì•„ë‹ˆìš”\" ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤) : ");
+			printf("\n\t\t\t\t\t\t\t\t\t\t\t¾î¸´ ±¤´ë¸¦ ³»½Ã°Ú½À´Ï±î? (\"¿¹\" È¤Àº \"¾Æ´Ï¿ä\" ¶ó°í ÀÔ·ÂÇÏ½Ã¿À) : ");
 			gets_s(buf_, 255);
 
-			if (strcmp(buf_, "ì˜ˆ") == 0) {
+			if (strcmp(buf_, "¿¹") == 0) {
 			HOW_JOKER:
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì–´ë¦¿ ê´‘ëŒ€ë¥¼ ëª‡ ì¥ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\t¾î¸´ ±¤´ë¸¦ ¸î Àå ³»½Ã°Ú½À´Ï±î? : ");
 				scanf_s("%d", &Joker);
 
-				if (Joker > User->deck[0]) {
-					printf("\n\t\t\t\t\t\t\t\t\t\t\të„ˆë¬´ ë§ì´ ë‚´ì…¨ìŠµë‹ˆë‹¤.\n");
+				if (Joker > user->deck[0]) {
+					printf("\n\t\t\t\t\t\t\t\t\t\t\t³Ê¹« ¸¹ÀÌ ³»¼Ì½À´Ï´Ù.\n");
 					goto HOW_JOKER;
 				}
 
 				else {
-					User->deck[0] -= Joker;
+					user->deck[0] -= Joker;
 					goto HOW_CARD;
 				}
 			}
-			else if (strcmp(buf_, "ì•„ë‹ˆìš”") == 0) goto HOW_CARD;
+			else if (strcmp(buf_, "¾Æ´Ï¿ä") == 0) goto HOW_CARD;
 			else {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
 				goto JOKER;
 			}
 		}
 
 	HOW_CARD:
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%së¥¼ ëª‡ ì¥ ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? : ", class[Card_Kind]);
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%s¸¦ ¸î Àå ³»½Ã°Ú½À´Ï±î? : ", class[Card_Kind]);
 		scanf_s("%d", &Card_How);
 
 		if (Joker > 0) {
 			if (Pay_Card_Num > Card_How + Joker) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ ë” ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ ´õ ³»¼Å¾ßÇÕ´Ï´Ù.\n");
 				goto HOW_CARD;
 			}
 			else if (Pay_Card_Num < Card_How + Joker) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ ë§ì´ ë‚´ì…¨ìŠµë‹ˆë‹¤.\n");
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ ¸¹ÀÌ ³»¼Ì½À´Ï´Ù.\n");
 				goto HOW_CARD;
 			}
-			else User->deck[Card_Kind] -= Card_How;
+			else user->deck[Card_Kind] -= Card_How;
 		}
 
 		else {
-			if (User->deck[Card_Kind] < Card_How) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì†Œìœ í•˜ì‹  ì¹´ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
+			if (user->deck[Card_Kind] < Card_How) {
+				printf("\n\t\t\t\t\t\t\t\t\t\t\t¼ÒÀ¯ÇÏ½Å Ä«µå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n");
 				goto HOW_CARD;
 			}
 			else if (Pay_Card_Num > Card_How) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ %dì¥ ë” ë‚´ì…”ì•¼í•©ë‹ˆë‹¤.\n", Pay_Card_Num - Card_How);
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ %dÀå ´õ ³»¼Å¾ßÇÕ´Ï´Ù.\n", Pay_Card_Num - Card_How);
 				goto HOW_CARD;
 			}
 			else if (Pay_Card_Num > 0 && Pay_Card_Num < Card_How) {
-				printf("\n\t\t\t\t\t\t\t\t\t\t\tì¹´ë“œë¥¼ %dì¥ ë” ë‚´ì…¨ìŠµë‹ˆë‹¤.\n", Card_How - Pay_Card_Num);
+				printf("\n\t\t\t\t\t\t\t\t\t\t\tÄ«µå¸¦ %dÀå ´õ ³»¼Ì½À´Ï´Ù.\n", Card_How - Pay_Card_Num);
 				goto HOW_CARD;
 			}
+			else user->deck[Card_Kind] -= Card_How;
 		}
 
-		if (count % 3 == 0) {
-			Pay_Card_Num = Card_How;
-			User->deck[Card_Kind] -= Card_How;
-		}
-		else User->deck[Card_Kind] -= Card_How;
+		if (count % 3 == 0) Pay_Card_Num = Card_How;
 		count++;
 	}
 	else {
-		printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
+		printf("\n\t\t\t\t\t\t\t\t\t\t\tÀß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.\n");
 		goto DECIDE;
 	}
 
 	system("cls");
+	return 0;
 }
 
-void Reorganize_Class(struct User* User) {
+int Reorganize_Class(struct User* user) {
 
-	// ê°€ì§€ê³  ìˆëŠ” íŒ¨ ì¤‘ì—ì„œ 0ê°œì¸ ì¹´ë“œì˜ ì¢…ë¥˜ë¥¼ ì¹´ìš´íŠ¸í•˜ì—¬ ì €ì¥í•  ë³€ìˆ˜
+	if (user->Rank > 0) return 0;
+
 	int Count = 0;
 	char buf[255] = { 0 };
 
 	for (int i = 0; i < 13; i++) {
-		if (User->deck[i] == 0) {
+		if (user->deck[i] == 0) {
 			Count += 1;
 		}
 	}
 
 	if (Count == 13) {
-		// ë“±ìˆ˜ì— ë”°ë¼ ê³„ê¸‰ ë¶€ì—¬
+		// µî¼ö¿¡ µû¶ó °è±Ş ºÎ¿©
 		switch (Rank) {
 		case 0:
-			strcpy(User->Class, "ì™•");
+			strcpy(user->Class, "¿Õ");
+			user->Rank = Rank;
 			break;
 		case 1:
-			strcpy(User->Class, "ê·€ì¡±");
+			strcpy(user->Class, "±ÍÁ·");
+			user->Rank = Rank;
 			break;
 		case 2:
-			strcpy(User->Class, "í‰ë¯¼");
+			strcpy(user->Class, "Æò¹Î");
+			user->Rank = Rank;
 			break;
 		case 3:
-			strcpy(User->Class, "ë…¸ì˜ˆ");
+			strcpy(user->Class, "³ë¿¹");
+			user->Rank = Rank;
 			break;
 		}
 
 		Rank++;
 	}
-}
-
-int Decide_Re_Game(struct User* User) {
-	char buf[255] = { 0 };
-
-	if (strcmp(User->Class, "ì™•") == 0) {
-	PROCEED:
-		printf("\n\t\t\t\t\t\t\t\t\t\t\t%s ì™•ê»˜ì„œëŠ” ê²Œì„ì„ ê³„ì† ì§„í–‰í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (\"ì˜ˆ\" í˜¹ì€ \"ì•„ë‹ˆìš”\"ë¼ê³  ì…ë ¥í•˜ì‹œì˜¤): ", User->name);
-		gets_s(buf, 255);
-
-		if (strcmp(buf, "ì˜ˆ") == 0) {
-			return 1;
-		}
-		else if (strcmp(buf, "ì•„ë‹ˆìš”") == 0) {
-			return 0;
-		}
-		else {
-			printf("\n\t\t\t\t\t\t\t\t\t\t\tì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
-			goto PROCEED;
-		}
-	}
 
 	return 0;
+}
+
+void Print_Game_Result(struct User* user) {
+
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t°ÔÀÓÀÇ °á°ú´Â ´ÙÀ½°ú °°½À´Ï´Ù!\n");
+	for (int i = 0; i < Player; i++)
+	{
+		printf("\n\t\t\t\t\t\t\t\t\t\t\t%sÀÇ °è±Ş : %s\n", user[i].name, user[i].Class);
+	}
+
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t¼ö°íÇÏ¼Ì½À´Ï´Ù!\n");
+
 }
