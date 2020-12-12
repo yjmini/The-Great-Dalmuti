@@ -1,0 +1,11 @@
+Function.h : 함수들의 선언과 변수들이 선언되어 있습니다.
+main.c : 메인 함수입니다.
+이를 제외한 모든 .c파일 : 함수들의 정의가 적혀있습니다.
+Dalmuti.exe : 실행 파일입니다.
+
+1. 비쥬얼 스튜디오에서 Empty Project로 만들어 주세요
+2. Source Files을 우클릭 후 Add -> Existing item을 눌러주세요.
+3. 파일에 있는 .c파일들을 모두 불러와주세요.
+4. Header Files을 우클릭 후 Add -> Existing item을 눌러주세요.
+5. 파일에 있는 Function.h를 불러와주세요.
+6. main.c에서 컴파일을 해주세요.
